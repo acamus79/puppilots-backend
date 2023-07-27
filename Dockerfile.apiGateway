@@ -1,0 +1,30 @@
+# Etapa base
+FROM node:18-alpine AS base
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+COPY nx.json .
+COPY tsconfig*.json ./
+COPY apps/api-gateway apps/api-gateway
+COPY libs libs
+COPY apps/api-gateway/.env.production apps/api-gateway/.env
+
+# Etapa de dependencias
+FROM base AS dependencies
+
+RUN npm install
+
+# Etapa de construcción
+FROM dependencies AS build
+
+RUN npx nx build api-gateway
+
+# Etapa de producción
+FROM base AS production
+
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/dist/apps/api-gateway ./dist
+
+EXPOSE 3333
+CMD ["node", "dist/main"]

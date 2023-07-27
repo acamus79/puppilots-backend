@@ -1,0 +1,46 @@
+version: "3.9"  # use what version you need
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.authService
+    env_file:
+      - apps/auth-service/.env.production
+    ports:
+      - 3001:3001
+    networks:
+      - backend
+
+  api-gateway:
+    image: dadarek/wait-for-dependencies
+    build:
+      context: .
+      dockerfile: Dockerfile.apiGateway
+    env_file:
+      - apps/api-gateway/.env.production
+    ports:
+      - 3333:3333
+    networks:
+      - backend
+    depends_on:
+      - auth-service
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=master123
+      - POSTGRES_DB=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  pg_data:
+    driver: local

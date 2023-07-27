@@ -1,0 +1,30 @@
+# Etapa base
+FROM node:18-alpine AS base
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+COPY nx.json .
+COPY tsconfig*.json ./
+COPY apps/auth-service apps/auth-service
+COPY libs libs
+COPY apps/auth-service/.env.production apps/auth-service/.env
+
+# Etapa de dependencias
+FROM base AS dependencies
+
+RUN npm install
+
+# Etapa de construcción
+FROM dependencies AS build
+
+RUN npx nx build auth-service
+
+# Etapa de producción
+FROM base AS production
+
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/dist/apps/auth-service ./dist
+
+EXPOSE 3001
+CMD ["node", "dist/main"]
