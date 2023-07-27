@@ -1,4 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
+import { EventEmitter } from 'stream';
 
 import { AppService } from './app.service';
 
@@ -9,5 +11,10 @@ export class AppController {
   @Get()
   getData() {
     return this.appService.getData();
+  }
+
+  @EventPattern("login")
+  handleLogin(data: string){
+    this.appService.emitMessage(data);
   }
 }
