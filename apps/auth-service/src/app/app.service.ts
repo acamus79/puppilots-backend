@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserLoginDto } from '@puppilots/shared-dtos';
-import { PrismaService } from '../services/prisma.service';
+import { PrismaService } from '@puppilots/shared-services';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
