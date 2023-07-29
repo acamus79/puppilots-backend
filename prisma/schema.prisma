@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model with unique email
+model User {
+  id    String     @id @default(uuid()) @db.Uuid
+  email String     @unique @db.VarChar(50)
+  password String
+  emailConfirmed Boolean      @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  costumer Costumer[]
+  pilot Pilot[]
+}
+
+model Costumer {
+  id    String     @id @default(uuid()) @db.Uuid
+  name String
+  lastName String
+  dni String       @db.VarChar(11)
+  phone String     @db.VarChar(20)
+  userId String?   @db.Uuid
+  user   User?     @relation(fields: [userId], references: [id])
+  addressId  String?   @db.Uuid
+  address   Address?    @relation(fields: [addressId], references: [id])
+  puppets Puppets[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Pilot {
+  id    String     @id @default(uuid()) @db.Uuid
+  name String
+  lastName String
+  dni String       @db.VarChar(11)
+  phone String    @db.VarChar(20)
+  userId String?   @db.Uuid
+  user   User?     @relation(fields: [userId], references: [id])
+  addressId  String?   @db.Uuid
+  address   Address?    @relation(fields: [addressId], references: [id])
+  walks Walks[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Address {
+  id    String     @id @default(uuid()) @db.Uuid
+  country String
+  city String
+  street String
+  number String
+  floor String?
+  department String?
+  latitude String?
+  longitude String?
+  costumer Costumer[]
+  pilot Pilot[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Puppets {
+  id    String     @id @default(uuid()) @db.Uuid
+  name String
+  costumerId String?   @db.Uuid
+  costumer   Costumer?     @relation(fields: [costumerId], references: [id])
+  walks Walks[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Walks {
+  id    String     @id @default(uuid()) @db.Uuid
+  beginDate DateTime
+  endDate DateTime
+  beginRealDate DateTime?
+  endRealDate DateTime?
+  observations String?
+  puppetId String?   @db.Uuid
+  puppet   Puppets?     @relation(fields: [puppetId], references: [id])
+  pilotId String?   @db.Uuid
+  pilot   Pilot?     @relation(fields: [pilotId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
