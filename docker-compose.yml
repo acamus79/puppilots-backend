@@ -24,6 +24,7 @@ services:
       - backend
     depends_on:
       - auth-service
+      - postgres
 
   postgres:
     image: postgres:latest
@@ -32,7 +33,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=master123
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=puppilots
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
