@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { UserLoginDto } from '@puppilots/shared-dtos';
 
 
 @Controller()
@@ -12,7 +13,7 @@ export class AppController {
   }
 
   @Post("login")
-  async login(@Body()email: string){
-    return this.appService.login(email);
+  async login(@Body() userLogin: UserLoginDto): Promise<any>{
+    return this.appService.login(userLogin);
   }
 }

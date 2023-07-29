@@ -20,6 +20,7 @@ model User {
   updatedAt DateTime  @updatedAt
   costumer Costumer[]
   pilot Pilot[]
+  role Role
 }
 
 model Costumer {
@@ -93,3 +94,7 @@ model Walks {
   updatedAt DateTime  @updatedAt
 }
 
+enum Role {
+  PILOT
+  CUSTOMER
+}

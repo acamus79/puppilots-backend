@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { UserLoginDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -9,9 +10,9 @@ export class AppService {
               @Inject("AUTH") private authClient: ClientProxy) {}
 
 
-  async login(email: string){
+  async login(userLogin: UserLoginDto){
     this.emailClient.emit("login", {});
-    const response = this.authClient.send({ cmd: "login"}, email);
+    const response = this.authClient.send({ cmd: "login"}, userLogin);
     return firstValueFrom(response);
   }
 

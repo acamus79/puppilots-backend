@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@puppilots/shared-dtos": ["libs/shared-dtos/src/index.ts"],
+      "@puppilots/shared-services": ["libs/shared-services/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
