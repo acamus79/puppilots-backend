@@ -9,7 +9,8 @@ export class AppService {
   constructor(@Inject("EMAIL") private emailClient: ClientProxy,
               @Inject("AUTH") private authClient: ClientProxy,
               @Inject("CUSTOMER") private customerClient: ClientProxy,
-              @Inject("PILOT") private pilotClient: ClientProxy) {}
+              @Inject("PILOT") private pilotClient: ClientProxy,
+              @Inject("WALK") private walkClient: ClientProxy) {}
 
 
   async login(userLogin: UserLoginDto){

@@ -9,7 +9,8 @@ import { AppService } from './app.service';
     { name: "EMAIL", transport: Transport.TCP },
     { name: "AUTH", transport: Transport.TCP, options: { port: 3001 } },
     { name: "CUSTOMER", transport: Transport.TCP, options: { port: 3002 } },
-    { name: "PILOT", transport: Transport.TCP, options: { port: 3003 } }
+    { name: "PILOT", transport: Transport.TCP, options: { port: 3003 } },
+    { name: "WALK", transport: Transport.TCP, options: { port: 3004 } }
   ])],
   controllers: [AppController],
   providers: [AppService],
