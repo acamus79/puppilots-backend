@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@puppilots/shared-dtos": ["libs/shared-dtos/src/index.ts"],
+      "@puppilots/shared-exceptions": ["libs/shared-exceptions/src/index.ts"],
       "@puppilots/shared-services": ["libs/shared-services/src/index.ts"]
     }
   },

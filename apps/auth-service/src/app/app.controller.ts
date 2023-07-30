@@ -1,7 +1,8 @@
 import { Body, Controller, Get } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, RpcException } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { UserLoginDto } from '@puppilots/shared-dtos';
+import { InvalidCredentialsException } from '@puppilots/shared-exceptions'
 
 @Controller()
 export class AppController {
@@ -16,7 +17,7 @@ export class AppController {
   async handleLogin(@Body() userLogin: UserLoginDto){
     const user = await this.appService.validateUser(userLogin);
     if(!user) {
-      throw new Error('Invalid credentials');
+      throw new InvalidCredentialsException(); // Lanzar una excepción con mensaje y código de error
     }
 
     return this.appService.login(user);
