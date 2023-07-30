@@ -21,7 +21,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3002;
   await app.listen();
   Logger.log(
-    `🚀 Microservice Customer is running on: ${port}`
+    `🚀 Microservice Customer is running`
   );
 }
 

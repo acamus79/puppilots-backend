@@ -3,6 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
@@ -16,7 +17,9 @@ async function bootstrap() {
     });
 
   await app.listen();
-
+  Logger.log(
+    `🚀 Microservice Email is running`
+  );
 }
 
 bootstrap();
