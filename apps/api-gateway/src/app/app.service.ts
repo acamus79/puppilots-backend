@@ -7,7 +7,8 @@ import { firstValueFrom } from 'rxjs';
 export class AppService {
 
   constructor(@Inject("EMAIL") private emailClient: ClientProxy,
-              @Inject("AUTH") private authClient: ClientProxy) {}
+              @Inject("AUTH") private authClient: ClientProxy,
+              @Inject("CUSTOMER") private customerClient: ClientProxy) {}
 
 
   async login(userLogin: UserLoginDto){
