@@ -19,7 +19,7 @@ async function bootstrap() {
 
   await app.listen();
   Logger.log(
-    `🚀 Microservice Auth is running on`
+    `🚀 Microservice Auth is running`
   );
 }
 

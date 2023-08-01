@@ -14,14 +14,12 @@ async function bootstrap() {
     AppModule,
     {
       transport: Transport.TCP,
-      options: { port: 3002}
+      options: { port: 3003 }
     });
 
-
-  const port = process.env.PORT || 3002;
   await app.listen();
   Logger.log(
-    `🚀 Microservice Customer is running`
+    `🚀 Microservice Pilot is running`
   );
 }
 
