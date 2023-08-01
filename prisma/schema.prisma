@@ -12,132 +12,89 @@ datasource db {
 
 // User model with unique email
 model User {
-  id                 String     @id @default(uuid()) @db.Uuid
-  email              String     @unique @db.VarChar(50)
-  password           String
-  tokenResetPassword String?
-  emailConfirmed     Boolean    @default(false)
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
-  costumer           Costumer[]
-  pilot              Pilot[]
-  role               Role
+  id    String     @id @default(uuid()) @db.Uuid
+  email String     @unique @db.VarChar(50)
+  password String
+  emailConfirmed Boolean      @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  costumer Costumer[]
+  pilot Pilot[]
+  role Role
 }
 
 model Costumer {
-  id        String    @id @default(uuid()) @db.Uuid
-  name      String    @db.VarChar(50)
-  lastName  String    @db.VarChar(50)
-  dni       String    @db.VarChar(11)
-  phone     String    @db.VarChar(20)
-  userId    String?   @db.Uuid
-  user      User?     @relation(fields: [userId], references: [id])
-  addressId String?   @db.Uuid
-  address   Address?  @relation(fields: [addressId], references: [id])
-  puppets   Puppets[]
+  id    String     @id @default(uuid()) @db.Uuid
+  name String
+  lastName String
+  dni String       @db.VarChar(11)
+  phone String     @db.VarChar(20)
+  userId String?   @db.Uuid
+  user   User?     @relation(fields: [userId], references: [id])
+  addressId  String?   @db.Uuid
+  address   Address?    @relation(fields: [addressId], references: [id])
+  puppets Puppets[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
 
 model Pilot {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String   @db.VarChar(50)
-  lastName  String   @db.VarChar(50)
-  dni       String   @db.VarChar(11)
-  phone     String   @db.VarChar(20)
-  userId    String?  @db.Uuid
-  user      User?    @relation(fields: [userId], references: [id])
-  addressId String?  @db.Uuid
-  address   Address? @relation(fields: [addressId], references: [id])
-  walks     Walks[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id    String     @id @default(uuid()) @db.Uuid
+  name String
+  lastName String
+  dni String       @db.VarChar(11)
+  phone String    @db.VarChar(20)
+  userId String?   @db.Uuid
+  user   User?     @relation(fields: [userId], references: [id])
+  addressId  String?   @db.Uuid
+  address   Address?    @relation(fields: [addressId], references: [id])
+  walks Walks[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Address {
-  id         String     @id @default(uuid()) @db.Uuid
-  country    String     @db.VarChar(50)
-  city       String     @db.VarChar(80)
-  street     String     @db.VarChar(80)
-  number     String     @db.VarChar(10)
-  floor      String?    @db.VarChar(10)
-  department String?    @db.VarChar(10)
-  latitude   String?    @db.VarChar(50)
-  longitude  String?    @db.VarChar(50)
-  costumer   Costumer[]
-  pilot      Pilot[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id    String     @id @default(uuid()) @db.Uuid
+  country String
+  city String
+  street String
+  number String
+  floor String?
+  department String?
+  latitude String?
+  longitude String?
+  costumer Costumer[]
+  pilot Pilot[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Puppets {
-  id           String    @id @default(uuid()) @db.Uuid
-  name         String    @db.VarChar(50)
-  size         Size      @default(MEDIUM)
-  breed        String?   @default("Mestizo") @db.VarChar(50)
-  sex          Sex?      @default(OTHER)
-  observations String?
-  costumerId   String?   @db.Uuid
-  costumer     Costumer? @relation(fields: [costumerId], references: [id])
-  walks        Walks[]
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id    String     @id @default(uuid()) @db.Uuid
+  name String
+  costumerId String?   @db.Uuid
+  costumer   Costumer?     @relation(fields: [costumerId], references: [id])
+  walks Walks[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Walks {
-  id            String    @id @default(uuid()) @db.Uuid
-  beginDate     DateTime
-  endDate       DateTime
+  id    String     @id @default(uuid()) @db.Uuid
+  beginDate DateTime
+  endDate DateTime
   beginRealDate DateTime?
-  endRealDate   DateTime?
-  observations  String?   @db.VarChar(1000)
-  puppetId      String?   @db.Uuid
-  puppet        Puppets?  @relation(fields: [puppetId], references: [id])
-  pilotId       String?   @db.Uuid
-  pilot         Pilot?    @relation(fields: [pilotId], references: [id])
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  endRealDate DateTime?
+  observations String?
+  puppetId String?   @db.Uuid
+  puppet   Puppets?     @relation(fields: [puppetId], references: [id])
+  pilotId String?   @db.Uuid
+  pilot   Pilot?     @relation(fields: [pilotId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 enum Role {
   PILOT
   CUSTOMER
 }
-
-enum Size {
-  SMALL
-  MEDIUM
-  BIG
-}
-
-enum Sex {
-  MALE
-  FEMALE
-  OTHER
-}
-
-model Breed {
-  id        Int      @id @default(autoincrement()) @db.Integer
-  name      String   @db.VarChar(80) @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Country {
-  id        Int      @id @default(autoincrement()) @db.Integer
-  name      String   @db.VarChar(80) @unique
-  cities    City[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model City {
-  id        Int      @id @default(autoincrement()) @db.Integer
-  name      String   @db.VarChar(80)
-  countryId Int      @db.Integer
-  country   Country  @relation(fields: [countryId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-
