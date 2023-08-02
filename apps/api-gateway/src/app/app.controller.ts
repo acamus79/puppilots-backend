@@ -16,7 +16,7 @@ export class AppController {
   }
 
   @Post("login")
-  async login(@Body() userLogin: UserLoginDto): Promise<any>{
+  async login(@Body() userLogin: UserLoginDto): Promise<unknown>{
       return await this.appService.login(userLogin);
   }
 
