@@ -4,7 +4,6 @@ import { PrismaService } from '@puppilots/shared-services';
 import * as bcrypt from 'bcrypt';
 import { UserClientDto, CustomerDto } from '@puppilots/shared-dtos'
 import { UserExistException } from '@puppilots/shared-exceptions'
-import { CLIENT_RENEG_LIMIT } from 'tls';
 
 @Injectable()
 export class AppService {
@@ -16,19 +15,19 @@ export class AppService {
   }
 
   async createUserAndCustomer(userNew: UserClientDto<CustomerDto>){
-    const userExist = this.prismaService.user.findUnique({
+    const userExist = await this.prismaService.user.findUnique({
       where: { email: userNew.email }
     });
 
-    const customerExist = this.prismaService.costumer.findFirst({
+    const customerExist = await this.prismaService.costumer.findFirst({
       where: { dni: userNew.client.dni }
     });
 
-    if(!userExist || !customerExist){
+    if(userExist != null || customerExist != null){
       throw new UserExistException();
     }
 
-    const userAndCustomer = this.prismaService.user.create({
+    const userAndCustomer = await this.prismaService.user.create({
       data: {
         email: userNew.email,
         password: await bcrypt.hash(userNew.password,10),
@@ -58,7 +57,9 @@ export class AppService {
       },
     });
 
+    const {password, ...userCreated} = userAndCustomer;
 
+    return userCreated;
   }
 
 }

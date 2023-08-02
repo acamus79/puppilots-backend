@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CustomerDto, UserClientDto, UserLoginDto } from '@puppilots/shared-dtos';
-import { RpcException } from '@nestjs/microservices';
-import { ApiBody, ApiExtraModels } from '@nestjs/swagger';
+import { ApiExtraModels } from '@nestjs/swagger';
 
 
 @Controller()
@@ -20,9 +19,8 @@ export class AppController {
       return await this.appService.login(userLogin);
   }
 
-  @ApiBody({type: UserClientDto})
   @Post("customer")
   async createUserAndCustomer(@Body() userNew: UserClientDto<CustomerDto>){
-    return await this.appService.createUserAndCustomer(userNew);
+   return await this.appService.createUserAndCustomer(userNew);
   }
 }

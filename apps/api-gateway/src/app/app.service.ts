@@ -25,7 +25,8 @@ export class AppService {
 
   async createUserAndCustomer(userNew: UserClientDto<CustomerDto>) {
     try {
-      await this.customerClient.send({ cmd: "create-user-and-customer"}, userNew);
+      const result = await this.customerClient.send({ cmd: "create-user-and-customer"}, userNew);
+      return await firstValueFrom(result);
     } catch (error) {
       throw new HttpException(error.message, error.code);
     }

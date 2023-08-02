@@ -15,6 +15,6 @@ export class AppController {
 
   @MessagePattern({cmd: "create-user-and-customer"})
   async createUserAndCustomer(@Body() client: UserClientDto<CustomerDto>){
-    return await this.appService.createUserAndCustomer(client);
+   return await this.appService.createUserAndCustomer(client);
   }
 }
