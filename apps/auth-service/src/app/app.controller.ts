@@ -1,5 +1,5 @@
 import { Body, Controller, Get } from '@nestjs/common';
-import { MessagePattern, RpcException } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { UserLoginDto } from '@puppilots/shared-dtos';
 import { InvalidCredentialsException } from '@puppilots/shared-exceptions'
