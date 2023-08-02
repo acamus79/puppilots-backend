@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { Body, Controller, Get } from '@nestjs/common';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
+import { CustomerDto, UserClientDto } from '@puppilots/shared-dtos';
 
 import { AppService } from './app.service';
 
@@ -12,4 +13,8 @@ export class AppController {
     return this.appService.getData();
   }
 
+  @MessagePattern({cmd: "create-user-and-customer"})
+  async createUserAndCustomer(@Body() client: UserClientDto<CustomerDto>){
+    return await this.appService.createUserAndCustomer(client);
+  }
 }
