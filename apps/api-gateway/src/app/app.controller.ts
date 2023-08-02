@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { UserLoginDto } from '@puppilots/shared-dtos';
-
+import { CustomerDto, UserClientDto, UserLoginDto } from '@puppilots/shared-dtos';
+import { ApiExtraModels } from '@nestjs/swagger';
 
 
 @Controller()
+@ApiExtraModels(CustomerDto)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -16,5 +17,10 @@ export class AppController {
   @Post("login")
   async login(@Body() userLogin: UserLoginDto): Promise<unknown>{
       return await this.appService.login(userLogin);
+  }
+
+  @Post("customer")
+  async createUserAndCustomer(@Body() userNew: UserClientDto<CustomerDto>){
+   return await this.appService.createUserAndCustomer(userNew);
   }
 }
