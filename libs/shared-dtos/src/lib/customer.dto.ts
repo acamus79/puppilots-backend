@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsString, IsUUID } from "class-validator"
+import {  IsUUID } from "class-validator"
 import { AddressDto } from "./address.dto"
 import { PuppetDto } from "./puppet.dto"
 
@@ -13,9 +13,11 @@ export class CustomerDto {
   @ApiProperty()
   dni: string
 
+  userId: string
+
   @ApiProperty()
   phone: string
- // userId: string
+
   @ApiProperty()
   @IsUUID()
   addressId?: string
