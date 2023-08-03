@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CustomerDto, UserClientDto, UserLoginDto, VerifyTokenDto } from '@puppilots/shared-dtos';
+import { CustomerDto, UserLoginDto, VerifyTokenDto } from '@puppilots/shared-dtos';
 import { ApiExtraModels } from '@nestjs/swagger';
 
 
@@ -24,8 +24,4 @@ export class AppController {
     return await this.appService.verifyToken(token);
   }
 
-  @Post("customer")
-  async createUserAndCustomer(@Body() userNew: UserClientDto<CustomerDto>){
-   return await this.appService.createUserAndCustomer(userNew);
-  }
 }
