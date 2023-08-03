@@ -5,7 +5,7 @@ import { ApiExtraModels } from '@nestjs/swagger';
 
 
 @Controller("auth")
-@ApiExtraModels(CustomerDto)
+@ApiExtraModels(UserLoginDto, VerifyTokenDto)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -15,7 +15,7 @@ export class AppController {
   }
 
   @Post("login")
-  async login(@Body() userLogin: UserLoginDto): Promise<unknown>{
+  async login(@Body() userLogin: UserLoginDto): Promise<unknown> {
     return await this.appService.login(userLogin);
   }
 

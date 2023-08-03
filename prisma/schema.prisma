@@ -26,10 +26,10 @@ model User {
 
 model Costumer {
   id        String    @id @default(uuid()) @db.Uuid
-  name      String    @db.VarChar(50)
-  lastName  String    @db.VarChar(50)
-  dni       String    @db.VarChar(11)
-  phone     String    @db.VarChar(20)
+  name      String?   @db.VarChar(50)
+  lastName  String?   @db.VarChar(50)
+  dni       String?   @db.VarChar(11)
+  phone     String?   @db.VarChar(20)
   userId    String?   @db.Uuid
   user      User?     @relation(fields: [userId], references: [id])
   addressId String?   @db.Uuid
@@ -64,6 +64,7 @@ model Address {
   department String?    @db.VarChar(10)
   latitude   String?    @db.VarChar(50)
   longitude  String?    @db.VarChar(50)
+  references String?    @db.VarChar(1000)
   costumer   Costumer[]
   pilot      Pilot[]
   createdAt  DateTime   @default(now())

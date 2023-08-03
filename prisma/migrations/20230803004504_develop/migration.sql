@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "Address" ADD COLUMN     "references" VARCHAR(1000);
+
+-- AlterTable
+ALTER TABLE "Costumer" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "lastName" DROP NOT NULL,
+ALTER COLUMN "dni" DROP NOT NULL,
+ALTER COLUMN "phone" DROP NOT NULL;
