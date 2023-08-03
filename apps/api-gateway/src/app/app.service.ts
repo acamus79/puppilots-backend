@@ -21,6 +21,6 @@ export class AppService {
   }
 
   getData(): { message: string } {
-    return { message: 'Hello API' };
+    return { message: 'Puppilots API 1.0' };
   }
 }

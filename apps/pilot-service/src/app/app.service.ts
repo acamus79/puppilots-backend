@@ -23,9 +23,10 @@ export class AppService {
       where: { email: userNew.email },
     });
     // Si el usuario existe y su rol es PILOT se lanza una excepcion
-    if (userExist?.role === Role.PILOT) {
+    if (userExist) {
       throw new UserExistException();
     }
+
     // Se crea un usuario y se retorna un objeto de tipo UserAndPilotDto
     const userAndPilot = await this.prismaService.user.create({
       data: {

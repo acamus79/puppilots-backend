@@ -17,7 +17,7 @@ export class AppController {
     try {
       return await this.appService.createUserAndPilot(client);
     } catch (error) {
-      throw new RpcException({message: error.message, code: 403});
+      throw new RpcException({message: error.message, code: 404});
     }
   }
 }
