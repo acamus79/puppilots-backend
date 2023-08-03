@@ -1,6 +1,6 @@
 import { HttpException, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CustomerDto, UserClientDto, UserLoginDto } from '@puppilots/shared-dtos';
+import { CustomerDto, UserClientDto, UserLoginDto, VerifyTokenDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -13,12 +13,21 @@ export class AppService {
               @Inject("WALK") private walkClient: ClientProxy) {}
 
 
-  async login(userLogin: UserLoginDto){
+  async login(userLogin: UserLoginDto) {
     this.emailClient.emit("login", {});
     try {
       const response = this.authClient.send({ cmd: "login" }, userLogin);
       return await firstValueFrom(response);
     } catch (error) {
+      throw new HttpException(error.message, error.code);
+    }
+  }
+
+  async verifyToken(token: VerifyTokenDto) {
+    try {
+      const response = this.authClient.send({ cmd: "verify-token" }, token);
+      return await firstValueFrom(response);
+    } catch(error) {
       throw new HttpException(error.message, error.code);
     }
   }
@@ -36,3 +45,4 @@ export class AppService {
     return { message: 'Hello API' };
   }
 }
+  
