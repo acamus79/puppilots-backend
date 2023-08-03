@@ -3,8 +3,9 @@ import { Role } from "@prisma/client"
 import { IsEmail, IsStrongPassword } from "class-validator"
 import { CustomerDto } from "./customer.dto"
 import { UserLoginDto } from "./user-login.dto"
+import { PilotDto } from "./pilot.dto"
 
-export class UserClientDto<T extends CustomerDto | UserLoginDto> {
+export class UserClientDto<T extends CustomerDto | UserLoginDto | PilotDto> {
   @IsEmail()
   @ApiProperty()
   email: string
