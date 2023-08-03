@@ -20,18 +20,7 @@ export class AppController {
 
   @Post('login')
   async login(@Body() userLogin: UserLoginDto): Promise<unknown> {
-    console.log('Controlador de login');
     return await this.appService.login(userLogin);
   }
 
-  @Post('customer')
-  async createUserAndCustomer(@Body() userNew: UserClientDto<CustomerDto>) {
-    return await this.appService.createUserAndCustomer(userNew);
-  }
-
-  @Post('pilot')
-  async createUserAndPilot(@Body() userNew: UserClientDto<PilotDto>) {
-    console.log('Controlador de piloto en el Gateway');
-    return await this.appService.createUserAndPilot(userNew);
-  }
 }
