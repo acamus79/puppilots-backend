@@ -14,7 +14,6 @@ export class AppController {
 
   @MessagePattern({ cmd: 'create-user-and-pilot' })
   async createUserAndPilot(@Body() client: UserClientDto<PilotDto>) {
-    console.log("Controlador de piloto");
     try {
       return await this.appService.createUserAndPilot(client);
     } catch (error) {

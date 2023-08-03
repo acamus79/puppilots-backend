@@ -18,8 +18,6 @@ export class AppService {
   // Se crea un metodo createUserAndPilot que recibe un objeto de tipo UserClientDto<PilotDto>
   // y retorna un objeto de tipo UserAndPilotDto
   async createUserAndPilot(userNew: UserClientDto<PilotDto>) {
-    console.log("Servicio de piloto");
-
     // Se busca un usuario por email
     const userExist = await this.prismaService.user.findUnique({
       where: { email: userNew.email },
