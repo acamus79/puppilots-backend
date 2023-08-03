@@ -1,15 +1,11 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import {
-  CustomerDto,
-  PilotDto,
-  UserClientDto,
-  UserLoginDto,
-} from '@puppilots/shared-dtos';
+import { CustomerDto, UserLoginDto, VerifyTokenDto } from '@puppilots/shared-dtos';
 import { ApiExtraModels } from '@nestjs/swagger';
 
-@ApiExtraModels(CustomerDto, PilotDto, UserClientDto, UserLoginDto)
-@Controller()
+
+@Controller("auth")
+@ApiExtraModels(UserLoginDto, VerifyTokenDto)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -18,9 +14,14 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @Post('login')
+  @Post("login")
   async login(@Body() userLogin: UserLoginDto): Promise<unknown> {
     return await this.appService.login(userLogin);
+  }
+
+  @Post("verify-token")
+  async verifyToken(@Body() token: VerifyTokenDto): Promise<any> {
+    return await this.appService.verifyToken(token);
   }
 
 }
