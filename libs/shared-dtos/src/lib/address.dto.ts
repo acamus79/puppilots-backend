@@ -24,4 +24,7 @@ export class AddressDto {
 
   @ApiProperty()
   longitude?: string
+
+  @ApiProperty()
+  references: string;
 }

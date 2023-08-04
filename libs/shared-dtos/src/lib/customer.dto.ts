@@ -20,10 +20,6 @@ export class CustomerDto {
   @ApiProperty()
   phone: string
 
-  //@ApiProperty()
-  //@IsUUID()
-  //addressId?: string
-
   @ApiProperty({ type: AddressDto})
   address?: AddressDto
 
