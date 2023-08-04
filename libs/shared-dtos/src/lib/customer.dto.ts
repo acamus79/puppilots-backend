@@ -13,6 +13,8 @@ export class CustomerDto {
   @ApiProperty()
   dni: string
 
+  @ApiProperty()
+  @IsUUID()
   userId: string
 
   @ApiProperty()
