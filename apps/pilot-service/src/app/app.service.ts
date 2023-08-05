@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@puppilots/shared-services';
 import { Role } from '@prisma/client';
-import { UserClientDto, PilotDto } from '@puppilots/shared-dtos';
+import { PilotDto } from '@puppilots/shared-dtos';
 import { UserExistException } from '@puppilots/shared-exceptions';
 import * as bcrypt from 'bcrypt';
 
@@ -15,9 +15,7 @@ export class AppService {
     return { message: 'Hello API' };
   }
 
-  // Se crea un metodo createUserAndPilot que recibe un objeto de tipo UserClientDto<PilotDto>
-  // y retorna un objeto de tipo UserAndPilotDto
-  async createUserAndPilot(userNew: UserClientDto<PilotDto>) {
+  async createUserAndPilot(userNew: PilotDto) {
     // Se busca un usuario por email
     const userExist = await this.prismaService.user.findUnique({
       where: { email: userNew.email },
@@ -36,20 +34,20 @@ export class AppService {
         pilot: {
           create: [
             {
-              name: userNew.client.name,
-              lastName: userNew.client.lastName,
-              dni: userNew.client.dni,
-              phone: userNew.client.phone,
+              name: userNew.name,
+              lastName: userNew.lastName,
+              dni: userNew.dni,
+              phone: userNew.phone,
               address: {
                 create: {
-                  country: userNew.client.address.country,
-                  city: userNew.client.address.city,
-                  street: userNew.client.address.street,
-                  number: userNew.client.address.number,
-                  floor: userNew.client.address.floor,
-                  department: userNew.client.address.department,
-                  latitude: userNew.client.address.latitude,
-                  longitude: userNew.client.address.longitude,
+                  country: userNew.address.country,
+                  city: userNew.address.city,
+                  street: userNew.address.street,
+                  number: userNew.address.number,
+                  floor: userNew.address.floor,
+                  department: userNew.address.department,
+                  latitude: userNew.address.latitude,
+                  longitude: userNew.address.longitude,
                 },
               },
             },

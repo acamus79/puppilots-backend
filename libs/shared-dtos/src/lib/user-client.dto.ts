@@ -5,7 +5,8 @@ import { CustomerDto } from "./customer.dto"
 import { UserLoginDto } from "./user-login.dto"
 import { PilotDto } from "./pilot.dto"
 
-export class UserClientDto<T extends CustomerDto | UserLoginDto | PilotDto> {
+
+export class UserClientDto<T extends CustomerDto | PilotDto> {
   @IsEmail()
   @ApiProperty()
   email: string
