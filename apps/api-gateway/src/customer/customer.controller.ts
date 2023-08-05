@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Put } from '@nestjs/common';
 import { CustomerDto, UserLoginDto } from '@puppilots/shared-dtos';
 import { CustomerService } from './customer.service';
 
@@ -12,7 +12,13 @@ export class CustomerController {
   }
 
   @Post()
-  async createCustomer(@Body() customer: CustomerDto){
+  async create(@Body() customer: CustomerDto){
     return await this.appService.create(customer);
   }
+
+  @Put()
+  async update(@Body() customer: CustomerDto){
+    return await this.appService.update(customer);
+  }
+
 }

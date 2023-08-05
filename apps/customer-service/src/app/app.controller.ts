@@ -22,4 +22,10 @@ export class AppController {
   async create(@Body() customer: CustomerDto){
     return await this.appService.create(customer);
   }
+
+  @MessagePattern({cmd: "update-customer"})
+  async update(@Body() customer: CustomerDto){
+    return await this.appService.udpdate(customer);
+  }
+
 }

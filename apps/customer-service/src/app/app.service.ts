@@ -75,4 +75,43 @@ export class AppService {
 
     return newCustomer;
   }
+
+  async udpdate(customerUpdate: CustomerDto){
+    const customer = await this.prismaService.costumer.findUnique({
+      where: {
+        id: customerUpdate.id
+      }});
+
+    if (customer == null) {
+      throw new UserNotExistException();
+    }
+
+    const customerModified = await this.prismaService.costumer.update({
+      where: {
+        id: customer.id,
+      },
+      data: {
+        name: customerUpdate.name,
+        lastName: customerUpdate.lastname,
+        dni: customerUpdate.dni,
+        phone: customerUpdate.phone,
+        address: {
+          update: {
+            country: customerUpdate.address.country,
+            city: customerUpdate.address.city,
+            street: customerUpdate.address.street,
+            number: customerUpdate.address.number,
+            floor: customerUpdate.address.floor,
+            department: customerUpdate.address.department,
+            latitude: customerUpdate.address.latitude,
+            longitude: customerUpdate.address.latitude,
+            references: customerUpdate.address.references
+          }
+        }
+      },
+    });
+
+    return customerModified;
+  }
+
 }
