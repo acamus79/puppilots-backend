@@ -1,6 +1,6 @@
 import { Body, Controller, Get } from '@nestjs/common';
 import {  MessagePattern } from '@nestjs/microservices';
-import { UserLoginDto } from '@puppilots/shared-dtos';
+import { CustomerDto, UserLoginDto } from '@puppilots/shared-dtos';
 
 import { AppService } from './app.service';
 
@@ -16,5 +16,10 @@ export class AppController {
   @MessagePattern({cmd: "create-user-customer"})
   async createUser(@Body() user: UserLoginDto){
    return await this.appService.createUser(user);
+  }
+
+  @MessagePattern({cmd: "create-customer"})
+  async create(@Body() customer: CustomerDto){
+    return await this.appService.create(customer);
   }
 }

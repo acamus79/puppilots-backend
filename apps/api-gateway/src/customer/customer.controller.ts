@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { UserLoginDto } from '@puppilots/shared-dtos';
+import { CustomerDto, UserLoginDto } from '@puppilots/shared-dtos';
 import { CustomerService } from './customer.service';
 
 @Controller('customer')
@@ -9,5 +9,10 @@ export class CustomerController {
   @Post("register")
   async createUser(@Body() userNew: UserLoginDto){
    return await this.appService.createUser(userNew);
+  }
+
+  @Post()
+  async createCustomer(@Body() customer: CustomerDto){
+    return await this.appService.create(customer);
   }
 }
