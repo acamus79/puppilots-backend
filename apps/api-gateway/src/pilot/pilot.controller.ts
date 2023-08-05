@@ -1,14 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { PilotDto, UserClientDto } from '@puppilots/shared-dtos';
+import {
+  Body,
+  Controller,
+  HttpException,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
+import { PilotDto } from '@puppilots/shared-dtos';
 import { PilotService } from './pilot.service';
 
 @Controller('pilot')
 export class PilotController {
-
-  constructor(private appService: PilotService){}
+  constructor(private appService: PilotService) {}
 
   @Post('register')
-  async createUserAndPilot(@Body() userNew: UserClientDto<PilotDto>) {
+  async createUserAndPilot(@Body(new ValidationPipe()) userNew: PilotDto) {
     return await this.appService.createUserAndPilot(userNew);
   }
 }
