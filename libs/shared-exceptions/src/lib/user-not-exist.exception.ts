@@ -2,6 +2,6 @@ import { RpcException } from "@nestjs/microservices";
 
 export class UserNotExistException extends RpcException {
   constructor(){
-    super({ message: "El usuario no existe", code: 400});
+    super({ message: "El usuario no existe", code: 404});
   };
 }

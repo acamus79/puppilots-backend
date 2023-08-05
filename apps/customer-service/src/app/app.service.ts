@@ -81,12 +81,8 @@ export class AppService {
       where: {
         id: customerUpdate.id
       }});
-    const address = await this.prismaService.address.findUnique({
-      where: {
-        id: customerUpdate.address.id
-      }});
 
-    if (customer == null || address == null) {
+    if (customer == null) {
       throw new UserNotExistException();
     }
 
@@ -98,27 +94,23 @@ export class AppService {
         name: customerUpdate.name,
         lastName: customerUpdate.lastname,
         dni: customerUpdate.dni,
-        phone: customerUpdate.phone
+        phone: customerUpdate.phone,
+        address: {
+          update: {
+            country: customerUpdate.address.country,
+            city: customerUpdate.address.city,
+            street: customerUpdate.address.street,
+            number: customerUpdate.address.number,
+            floor: customerUpdate.address.floor,
+            department: customerUpdate.address.department,
+            latitude: customerUpdate.address.latitude,
+            longitude: customerUpdate.address.latitude,
+            references: customerUpdate.address.references
+          }
+        }
       },
     });
 
-    const addreddModified = await this.prismaService.address.update({
-      where: {
-        id: address.id,
-      },
-      data: {
-        country: customerUpdate.address.country,
-        city: customerUpdate.address.city,
-        street: customerUpdate.address.street,
-        number: customerUpdate.address.number,
-        floor: customerUpdate.address.floor,
-        department: customerUpdate.address.department,
-        latitude: customerUpdate.address.latitude,
-        longitude: customerUpdate.address.latitude,
-        references: customerUpdate.address.references
-      },
-    });
-
-    return { customer: customerModified, address: addreddModified };
+    return customerModified;
   }
 }
