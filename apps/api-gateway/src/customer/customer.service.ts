@@ -28,4 +28,14 @@ export class CustomerService {
       throw new HttpException(error.message, error.code);
     }
   }
+
+  async update(customer: CustomerDto){
+    try {
+      const result = await this.customerClient.send({cmd: "update-customer"}, customer);
+      return await firstValueFrom(result);
+    } catch (error) {
+      throw new HttpException(error.message, error.code);
+
+    }
+  }
 }
