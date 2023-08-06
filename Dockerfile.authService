@@ -1,30 +1,42 @@
 # Etapa base
-FROM node:18-alpine AS base
+FROM node:18-bullseye AS base
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
+
+# Etapa de construcción
+FROM base AS build
+
 COPY nx.json .
 COPY tsconfig*.json ./
 COPY apps/auth-service apps/auth-service
 COPY libs libs
 COPY apps/auth-service/.env.production apps/auth-service/.env
+COPY prisma prisma
 
-# Etapa de dependencias
-FROM base AS dependencies
-
-RUN npm install
-
-# Etapa de construcción
-FROM dependencies AS build
-
+RUN npm ci
+RUN npx prisma generate
 RUN npx nx build auth-service
 
-# Etapa de producción
-FROM base AS production
+# Etapa de dependencias para producción
+From base AS dependencies
 
-COPY --from=dependencies /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/dist/apps/auth-service ./dist
+WORKDIR /app
+
+COPY --from=build package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build /app/dist/apps/auth-service ./dist
+
+# Etapa de producción
+FROM node:18-bullseye-slim as production
+
+WORKDIR /app
+
+COPY --from=dependencies /app  ./
 
 EXPOSE 3001
-CMD ["node", "dist/main"]
+ENV NODE_ENV production
+
+CMD ["dist/main.js"]

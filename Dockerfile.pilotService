@@ -10,14 +10,14 @@ FROM base AS build
 
 COPY nx.json .
 COPY tsconfig*.json ./
-COPY apps/api-gateway apps/api-gateway
+COPY apps/pilot-service apps/pilot-service
 COPY libs libs
-COPY apps/api-gateway/.env.production apps/aì-gateway/.env
+COPY apps/pilot-service/.env.production apps/pilot-service/.env
 COPY prisma prisma
 
 RUN npm ci
 RUN npx prisma generate
-RUN npx nx build api-gateway
+RUN npx nx build pilot-service
 
 # Etapa de dependencias para producción
 From base AS dependencies
@@ -27,7 +27,7 @@ WORKDIR /app
 COPY --from=build package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build /app/dist/apps/api-gateway ./dist
+COPY --from=build /app/dist/apps/pilot-service ./dist
 
 # Etapa de producción
 FROM node:18-bullseye-slim as production

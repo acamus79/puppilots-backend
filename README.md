@@ -122,6 +122,18 @@ nx generate @nrwl/nest:service config --project=api-gateway
 ```
 
 
+## Docker compose up
+
+```
+docker compose build
+docker compose up -d
+```
+
+Note. yo need to have a .env file in the root folder with at least this vars:
+```
+DATABASE_URL=
+AUTH_JWT_SECRET=
+```
 ## Set up CI!
 
 Nx comes with local caching already built-in (check your `nx.json`). On CI you might want to go a step further.
