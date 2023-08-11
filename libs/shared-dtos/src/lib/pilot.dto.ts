@@ -28,8 +28,7 @@ export class PilotDto {
 
   @ApiProperty( { example: '12345678' })
   @IsString()
-  @IsNotEmpty({ message: 'El DNI es requerido'})
-  dni: string;
+  dni?: string;
 
   @ApiProperty( { example: '12345678' })
   @IsString()

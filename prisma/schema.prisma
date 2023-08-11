@@ -43,7 +43,7 @@ model Pilot {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @db.VarChar(50)
   lastName  String   @db.VarChar(50)
-  dni       String   @db.VarChar(11)
+  dni       String?  @db.VarChar(11)
   phone     String   @db.VarChar(20)
   userId    String?  @db.Uuid
   user      User?    @relation(fields: [userId], references: [id])
@@ -58,8 +58,8 @@ model Address {
   id         String     @id @default(uuid()) @db.Uuid
   country    String     @db.VarChar(50)
   city       String     @db.VarChar(80)
-  street     String     @db.VarChar(80)
-  number     String     @db.VarChar(10)
+  street     String?     @db.VarChar(80)
+  number     String?    @db.VarChar(10)
   floor      String?    @db.VarChar(10)
   department String?    @db.VarChar(10)
   latitude   String?    @db.VarChar(50)
