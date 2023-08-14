@@ -1,8 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Sex, Size } from "@prisma/client";
-import { IsUUID } from "class-validator";
+import { IsNotEmpty, IsUUID } from "class-validator";
 export class PuppetDto {
   @ApiProperty()
+  @IsNotEmpty({message: 'El nombre es requerido'})
   name: string
 
   @ApiProperty()

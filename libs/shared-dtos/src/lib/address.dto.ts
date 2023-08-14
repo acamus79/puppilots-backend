@@ -15,13 +15,11 @@ export class AddressDto {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty({ message: 'La calle es requerida' })
-  street: string
+  street?: string
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty({ message: 'El número es requerido' })
-  number: string
+  number?: string
 
   @ApiProperty()
   floor?: string
