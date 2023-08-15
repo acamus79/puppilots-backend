@@ -31,6 +31,7 @@ jobs:
     - name: Install SSH client (si es necesario)
       run: sudo apt-get install -y ssh
 
+
     - name: SSH and run commands on remote server
       run: |
         mkdir -p ~/.ssh
