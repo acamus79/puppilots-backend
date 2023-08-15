@@ -1,0 +1,39 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "dev", "FEATURE/docker-image-ci-cd" ]
+  pull_request:
+    branches: [ "dev" ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Docker
+      run: docker ps
+
+    - name: Copy Dockerfile to the root folder
+      run: cp docker/Dockerfile.allMicroServices Dockerfile
+
+    - name: Login to DockerHub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build Docker image
+      run: docker build . --file Dockerfile --tag raomaster/puppilots-backend:latest
+
+    - name: Push Docker image
+      run: docker push raomaster/puppilots-backend:latest
+
+    - name: Install SSH client (si es necesario)
+      run: sudo apt-get install -y ssh
+
+    - name: SSH and run commands on remote server
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no  -p5060 ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "sh ~/puppilots/run.sh"
