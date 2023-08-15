@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: DONWEB
+      url: https://github.com
 
     steps:
     - uses: actions/checkout@v3
