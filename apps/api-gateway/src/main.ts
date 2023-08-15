@@ -13,19 +13,21 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-      .setTitle("Puppilots")
-      .setDescription("Api gateway")
-      .setVersion("1.0")
-      .addTag('puppilots')
-      .build();
+    .setTitle("Puppilots")
+    .setDescription("Api gateway")
+    .setVersion("1.0")
+    .addTag('puppilots')
+    .addServer(process.env.SWAGGER_URL)
+    .build();
 
-  const document = SwaggerModule.createDocument(app,config);
-  SwaggerModule.setup('api/swagger',app,document);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/swagger', app, document);
 
- const globalPrefix = 'api';
- app.setGlobalPrefix(globalPrefix);
+  const globalPrefix = 'api';
+  app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
