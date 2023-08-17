@@ -19,9 +19,13 @@ model User {
   emailConfirmed     Boolean    @default(false)
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
+  role               Role
   costumer           Costumer[]
   pilot              Pilot[]
-  role               Role
+  createdByWalks     Walks[]    @relation("WalksCreatedByUser")
+  updatedByWalks     Walks[]    @relation("WalksUpdatedByUser")
+  createdByPayment   Payment[]  @relation("PaymentCreatedByUser")
+  updatedByPayment   Payment[]  @relation("PaymentUpdatedByUser")
 }
 
 model Costumer {
@@ -37,28 +41,31 @@ model Costumer {
   puppets   Puppets[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  Payment   Payment[]
 }
 
 model Pilot {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String   @db.VarChar(50)
-  lastName  String   @db.VarChar(50)
-  dni       String?  @db.VarChar(11)
-  phone     String   @db.VarChar(20)
-  userId    String?  @db.Uuid
-  user      User?    @relation(fields: [userId], references: [id])
-  addressId String?  @db.Uuid
-  address   Address? @relation(fields: [addressId], references: [id])
-  walks     Walks[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String        @id @default(uuid()) @db.Uuid
+  name       String        @db.VarChar(50)
+  lastName   String        @db.VarChar(50)
+  dni        String?       @db.VarChar(11)
+  phone      String        @db.VarChar(20)
+  userId     String?       @db.Uuid
+  user       User?         @relation(fields: [userId], references: [id])
+  addressId  String?       @db.Uuid
+  address    Address?      @relation(fields: [addressId], references: [id])
+  walks      Walks[]
+  walkPilots WalksPilots[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  Payment    Payment[]
 }
 
 model Address {
   id         String     @id @default(uuid()) @db.Uuid
   country    String     @db.VarChar(50)
   city       String     @db.VarChar(80)
-  street     String?     @db.VarChar(80)
+  street     String?    @db.VarChar(80)
   number     String?    @db.VarChar(10)
   floor      String?    @db.VarChar(10)
   department String?    @db.VarChar(10)
@@ -86,18 +93,57 @@ model Puppets {
 }
 
 model Walks {
-  id            String    @id @default(uuid()) @db.Uuid
+  id            String        @id @default(uuid()) @db.Uuid
   beginDate     DateTime
   endDate       DateTime
   beginRealDate DateTime?
   endRealDate   DateTime?
-  observations  String?   @db.VarChar(1000)
-  puppetId      String?   @db.Uuid
-  puppet        Puppets?  @relation(fields: [puppetId], references: [id])
-  pilotId       String?   @db.Uuid
-  pilot         Pilot?    @relation(fields: [pilotId], references: [id])
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  observations  String?       @db.VarChar(1000)
+  puppetId      String?       @db.Uuid
+  puppet        Puppets?      @relation(fields: [puppetId], references: [id])
+  pilotId       String?       @db.Uuid
+  pilot         Pilot?        @relation(fields: [pilotId], references: [id])
+  walkPilots    WalksPilots[]
+  createdAt     DateTime      @default(now())
+  createdById   String?       @db.Uuid
+  createdBy     User?         @relation("WalksCreatedByUser", fields: [createdById], references: [id])
+  updatedAt     DateTime      @updatedAt
+  updatedById   String?       @db.Uuid
+  updatedBy     User?         @relation("WalksUpdatedByUser", fields: [updatedById], references: [id])
+  Payment       Payment[]
+}
+
+model WalksPilots {
+  idWalks   String   @db.Uuid
+  idPilot   String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+  walks     Walks    @relation(fields: [idWalks], references: [id])
+  pilots    Pilot    @relation(fields: [idPilot], references: [id])
+
+  @@id([idWalks, idPilot])
+  @@map(name: "walks_pilots")
+}
+
+model Payment {
+  id                String    @id @default(uuid()) @db.Uuid
+  amount            Decimal   @db.Decimal(10, 2)
+  orderId           String?   @db.VarChar(50)
+  status            Status    @default(CREATED)
+  capturePaymentRaw Json?     @db.Json
+  createdAt         DateTime  @default(now())
+  createdById       String?   @db.Uuid
+  createdBy         User?     @relation("PaymentCreatedByUser", fields: [createdById], references: [id])
+  updatedAt         DateTime  @updatedAt
+  updatedById       String?   @db.Uuid
+  updatedBy         User?     @relation("PaymentUpdatedByUser",fields: [updatedById], references: [id])
+  walkId            String?   @db.Uuid
+  walk              Walks?    @relation(fields: [walkId], references: [id])
+  costumerId        String?   @db.Uuid
+  costumer          Costumer? @relation(fields: [costumerId], references: [id])
+  pilotId           String?   @db.Uuid
+  pilot             Pilot?    @relation(fields: [pilotId], references: [id])
 }
 
 enum Role {
@@ -117,16 +163,23 @@ enum Sex {
   OTHER
 }
 
+enum Status {
+  CREATED
+  COMPLETED
+  CANCELED
+  APPROVED
+}
+
 model Breed {
   id        Int      @id @default(autoincrement()) @db.Integer
-  name      String   @db.VarChar(80) @unique
+  name      String   @unique @db.VarChar(80)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Country {
   id        Int      @id @default(autoincrement()) @db.Integer
-  name      String   @db.VarChar(80) @unique
+  name      String   @unique @db.VarChar(80)
   cities    City[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -140,5 +193,3 @@ model City {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-
