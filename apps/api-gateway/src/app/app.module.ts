@@ -8,6 +8,8 @@ import { PilotController } from './pilot.controller';
 import { PilotService } from './pilot.service';
 import { CustomerService } from './customer.service';
 import { PuppetService } from './puppet.service';
+import { RolesGuard } from './guards/roles.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -16,6 +18,9 @@ import { PuppetService } from './puppet.service';
       { name: 'CUSTOMER', transport: Transport.TCP, options: { port: 3002 } },
       { name: "PILOT", transport: Transport.TCP, options: { port: 3003 } },
     ]),
+    JwtModule.register({
+      secret: process.env.AUTH_JWT_SECRET
+    })
   ],
   controllers: [
     AppController,
@@ -24,10 +29,11 @@ import { PuppetService } from './puppet.service';
     PilotController,
   ],
   providers: [
+    RolesGuard,
     AppService,
     PilotService,
     CustomerService,
-    PuppetService
+    PuppetService,
   ],
 })
 export class AppModule {}
