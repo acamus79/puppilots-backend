@@ -18,8 +18,8 @@ export class PuppetService {
    * @param userId The ID of the user performing the operation.
    * @returns A promise that resolves to the created puppet.
    */
-  async create(puppet: PuppetDto, userId: string): Promise<any> {
-    const payload = { puppet, userId };
+  async create(puppetDto: PuppetDto, userId: string): Promise<any> {
+    const payload = { puppetDto, userId };
     return await this.sendCommand("create-puppet", payload);
   }
 
@@ -30,8 +30,8 @@ export class PuppetService {
    * @param userId The ID of the user performing the operation.
    * @returns A promise that resolves to the updated puppet.
    */
-  async update(puppet: PuppetDto, puppetId: string, userId: string): Promise<any> {
-    const payload = { puppet, puppetId, userId }
+  async update(puppetDto: PuppetDto, puppetId: string, userId: string): Promise<any> {
+    const payload = { puppetDto, puppetId, userId }
     return await this.sendCommand("update-puppet", payload);
   }
 
