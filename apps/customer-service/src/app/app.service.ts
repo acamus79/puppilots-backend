@@ -46,6 +46,14 @@ export class AppService {
       throw new UserNotExistException();
     }
 
+    const customerExist = await this.prismaService.costumer.findFirst({
+      where: { userId: customer.userId }
+    });
+
+    if(customerExist) {
+      throw new UserExistException();
+    }
+
     const newCustomer = await this.prismaService.costumer.create({
       data: {
         name: customer.name,
