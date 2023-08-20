@@ -3,6 +3,7 @@ import { EventPattern } from '@nestjs/microservices';
 import { EventEmitter } from 'stream';
 
 import { AppService } from './app.service';
+import { UserRegisterEvent } from '@puppilots/shared-dtos';
 
 @Controller()
 export class AppController {
@@ -13,8 +14,8 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @EventPattern("login")
-  handleLogin(data: string){
-    this.appService.emitMessage(data);
+  @EventPattern("register")
+  async handleRegister(data: UserRegisterEvent){
+    await this.appService.sendEmailOfRegister(data);
   }
 }
