@@ -16,7 +16,7 @@ export class CustomerService {
     try {
       const result = await this.customerClient.send({ cmd: "create-user-customer"}, userNew);
       const customer = await firstValueFrom(result);
-      await this.emailClient.emit('register', new UserRegisterEvent(userNew.email, Role.CUSTOMER));
+     // await this.emailClient.emit('register', new UserRegisterEvent(userNew.email, Role.CUSTOMER));
       return await this.authService.login({ email: userNew.email, password: userNew.password});
     } catch (error) {
       throw new HttpException(error.message, error.code);
