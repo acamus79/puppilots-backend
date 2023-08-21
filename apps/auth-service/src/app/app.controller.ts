@@ -6,24 +6,24 @@ import { InvalidCredentialsException } from '@puppilots/shared-exceptions'
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   getData() {
     return this.appService.getData();
   }
 
-  @MessagePattern({cmd: "login"})
+  @MessagePattern({ cmd: "login" })
   async handleLogin(@Body() userLogin: UserLoginDto) {
     const user = await this.appService.validateUser(userLogin);
-    if(!user) {
-      throw new InvalidCredentialsException(); // Lanzar una excepción con mensaje y código de error
+    if (!user) {
+      throw new InvalidCredentialsException(); // trigger a new exception with message and code
     }
 
     return this.appService.login(user);
   }
 
-  @MessagePattern({cmd: "verify-token"})
+  @MessagePattern({ cmd: "verify-token" })
   async handleVerifyToken(@Body() token: VerifyTokenDto) {
     return await this.appService.verifyToken(token);
   }

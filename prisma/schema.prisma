@@ -90,6 +90,7 @@ model Puppets {
   walks        Walks[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 }
 
 model Walks {
