@@ -1,6 +1,7 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices/client';
-import { PuppetDto } from 'libs/shared-dtos/src/lib/puppet.dto';
+import { Puppets } from '@prisma/client';
+import { PuppetDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -18,9 +19,9 @@ export class PuppetService {
    * @param userId The ID of the user performing the operation.
    * @returns A promise that resolves to the created puppet.
    */
-  async create(puppetDto: PuppetDto, userId: string): Promise<any> {
+  async create(puppetDto: PuppetDto, userId: string): Promise<Puppets> {
     const payload = { puppetDto, userId };
-    return await this.sendCommand("create-puppet", payload);
+    return await this.sendCommand<Puppets, { puppetDto: PuppetDto, userId: string }>("create-puppet", payload);
   }
 
   /**
@@ -30,9 +31,9 @@ export class PuppetService {
    * @param userId The ID of the user performing the operation.
    * @returns A promise that resolves to the updated puppet.
    */
-  async update(puppetDto: PuppetDto, puppetId: string, userId: string): Promise<any> {
+  async update(puppetDto: PuppetDto, puppetId: string, userId: string): Promise<Puppets> {
     const payload = { puppetDto, puppetId, userId }
-    return await this.sendCommand("update-puppet", payload);
+    return await this.sendCommand<Puppets, { puppetDto: PuppetDto, puppetId: string, userId: string }>("update-puppet", payload);
   }
 
   /**
@@ -41,9 +42,9 @@ export class PuppetService {
    * @param userId The ID of the user performing the operation.
    * @returns A promise that resolves to the deleted puppet.
    */
-  async delete(puppetId: string, userId: string): Promise<any> {
+  async delete(puppetId: string, userId: string): Promise<void> {
     const payload = { puppetId, userId };
-    return await this.sendCommand("delete-puppet", payload);
+    await this.sendCommand<void, { puppetId: string, userId: string }>("delete-puppet", payload);
   }
 
   /**
@@ -51,8 +52,8 @@ export class PuppetService {
    * @param customerId The ID of the customer.
    * @returns A promise that resolves to an array of puppets belonging to the customer.
    */
-  async findPuppetByCustommrId(customerId: string): Promise<any> {
-    return await this.sendCommand("puppets-by-customer", customerId);
+  async findPuppetByCustommrId(customerId: string): Promise<Puppets[]> {
+    return await this.sendCommand<Puppets[], string>("puppets-by-customer", customerId);
   }
 
   /**
@@ -62,11 +63,15 @@ export class PuppetService {
    * @returns A promise that resolves to the result of the command.
    * @throws HttpException if an error occurs during the command execution.
    */
-  private async sendCommand(cmd: string, payload: any): Promise<any> {
+  private async sendCommand<T, I>(cmd: string, payload: I): Promise<T> {
     try {
       const result = this.customerClient.send({ cmd }, payload);
+      if (cmd.includes('delete')) {
+        return
+      }
       return await firstValueFrom(result);
     } catch (error) {
+      Logger.debug(error)
       throw new HttpException(error.message, error.code);
     }
   }

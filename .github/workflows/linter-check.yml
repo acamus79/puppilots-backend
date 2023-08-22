@@ -1,0 +1,25 @@
+name: Linter Check
+
+on:
+  push:
+    
+jobs:
+  linter-check:
+    runs-on: ubuntu-latest
+    environment:
+      name: DONWEB
+      url: https://github.com
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18' # Puedes especificar la versión de Node.js que necesites
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Linting
+      run: npx nx run-many --all --target=lint

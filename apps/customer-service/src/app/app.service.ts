@@ -4,7 +4,6 @@ import { PrismaService } from '@puppilots/shared-services';
 import * as bcrypt from 'bcrypt';
 import { CommonUserDto, CustomerDto, UserLoginDto } from '@puppilots/shared-dtos'
 import { UserExistException, UserNotExistException } from '@puppilots/shared-exceptions'
-import { User } from '@prisma/client'
 
 @Injectable()
 export class AppService {
@@ -32,9 +31,11 @@ export class AppService {
       },
     });
 
-    const {password, tokenResetPassword, emailConfirmed, ...userCreated} = user;
-
-    return userCreated;
+    delete user.password;
+    delete user.tokenResetPassword;
+    delete user.emailConfirmed;
+    
+    return user;
   }
 
   async create(customer: CustomerDto) {

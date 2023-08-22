@@ -23,8 +23,9 @@ export class PilotService {
         { cmd: 'create-user-and-pilot' },
         userNew
       );
-      const pilot = await firstValueFrom(result);
+      await firstValueFrom(result);
      // await this.emailClient.emit('register', new UserRegisterEvent(userNew.email, Role.PILOT));
+
       return await this.authService.login({ email: userNew.email, password: userNew.password});
     } catch (error) {
       if (error.message === 'El usuario ya existe') {

@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { UserLoginDto, VerifyTokenDto } from '@puppilots/shared-dtos';
 import { ApiExtraModels } from '@nestjs/swagger';
+import { UserPayload } from '@prisma/client';
 
 
 @Controller("auth")
@@ -20,7 +21,7 @@ export class AppController {
   }
 
   @Post("verify-token")
-  async verifyToken(@Body() token: VerifyTokenDto): Promise<any> {
+  async verifyToken(@Body() token: VerifyTokenDto): Promise<UserPayload> {
     return await this.appService.verifyToken(token);
   }
 

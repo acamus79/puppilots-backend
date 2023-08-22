@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { Puppets } from '@prisma/client';
-import { PuppetDto } from 'libs/shared-dtos/src/lib/puppet.dto';
+import { PuppetDto } from '@puppilots/shared-dtos';
 import { PuppetService } from './puppet.service';
 
 @Controller('puppet')
@@ -38,6 +38,7 @@ export class PuppetController {
    */
   @MessagePattern({ cmd: "delete-puppet" })
   async deletePuppet(data: { puppetId: string, userId: string }): Promise<void> {
+    Logger.debug(data.puppetId)
     await this.puppetService.deletePuppet(data.puppetId, data.userId);
     return;
   }

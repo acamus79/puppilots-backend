@@ -10,7 +10,7 @@ interface UserPayload {
   sub: string;
   id?: string;
   role: Role;
-  [key: string]: any;
+  [key: string]: string | Date | number;
 }
 
 export interface Authenticatedrequest extends Request {
