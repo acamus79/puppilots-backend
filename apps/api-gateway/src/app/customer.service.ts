@@ -1,6 +1,6 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CustomerDto, UserLoginDto } from '@puppilots/shared-dtos';
+import { CustomerDto, UserLoginDto, UserRegisterEvent } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
 import { AppService } from '../app/app.service';
 
