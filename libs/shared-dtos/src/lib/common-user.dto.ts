@@ -8,6 +8,9 @@ export class CommonUserDto {
   userId?: string;
 
   @ApiProperty()
+  id?: string;
+
+  @ApiProperty()
   role: string;
 
   @ApiProperty()
