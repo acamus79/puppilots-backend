@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@puppilots/shared-services';
-import { Role } from '@prisma/client';
-import { PilotDto } from '@puppilots/shared-dtos';
-import { UserExistException } from '@puppilots/shared-exceptions';
+import { Address, Pilot, Role, User } from '@prisma/client';
+import { CommonUserDto, PilotDto } from '@puppilots/shared-dtos';
+import { UserExistException, UserNotExistException } from '@puppilots/shared-exceptions';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -60,4 +60,91 @@ export class AppService {
     const { password, ...userCreated } = userAndPilot;
     return userCreated;
   }
+
+  async getUserAndPilotById(id: string): Promise<CommonUserDto> {
+    // Se busca un usuario por id
+    const user = await this.prismaService.user.findUniqueOrThrow({
+      where: { id: id },
+    });
+    const pilot = await this.findPilotOrFail(id);
+
+    // Si el usuario o el pilot no existe se lanza una excepcion
+    if (!pilot || !user) {
+      throw new NotFoundException();
+    }
+    // Se retorna un objeto de tipo CommonUserDto
+    return this.mapToCommonUserDto(user, pilot, pilot.address);
+  }
+
+  async udpdate(pilotUpdate: CommonUserDto) : Promise<CommonUserDto>{
+
+    const user = await this.prismaService.user.findUnique({
+      where: { id : pilotUpdate['patch']['userId'] }
+    });
+
+    const pilot = await this.findPilotOrFail(pilotUpdate['patch']['userId']);
+
+    const pilotModified = await this.prismaService.pilot.update({
+      where: {
+        id: pilot.id,
+      },
+      data: {
+        name: pilotUpdate['patch'].name,
+        lastName: pilotUpdate['patch'].lastName,
+        dni: pilotUpdate['patch'].dni,
+        phone: pilotUpdate['patch'].phone,
+        address: {
+          update: {
+            country: pilotUpdate['patch']['address'].country,
+            city: pilotUpdate['patch'].address.city,
+            street: pilotUpdate['patch'].address.street,
+            number: pilotUpdate['patch'].address.number,
+            floor: pilotUpdate['patch'].address.floor,
+            department: pilotUpdate['patch'].address.department,
+            latitude: pilotUpdate['patch'].address.latitude,
+            longitude: pilotUpdate['patch'].address.latitude,
+            references: pilotUpdate['patch'].address.references
+          }
+        }
+      },
+    });
+    return this.mapToCommonUserDto(user, pilotModified, await this.prismaService.address.findUnique({ where: { id: pilotModified.addressId }}));
+  }
+
+  private async findPilotOrFail(userId: string) {
+    const pilot = await this.prismaService.pilot.findFirst({
+      where: { userId },
+      include: { address: true },
+    });
+
+    if (!pilot) {
+      throw new UserNotExistException();
+    }
+
+    return pilot;
+  }
+
+  private mapToCommonUserDto(user: User, pilot?: Pilot, address?:Address): CommonUserDto {
+    return {
+      userId: user.id,
+      role: user.role,
+      email: user.email,
+      name: pilot?.name || '',
+      lastName: pilot?.lastName || '',
+      dni: pilot?.dni || '',
+      phone: pilot?.phone || '',
+      address: {
+        country: address?.country || '',
+        city: address?.city || '',
+        street: address?.street || '',
+        number: address?.number || '',
+        floor: address?.floor || '',
+        department: address?.department || '',
+        latitude: address?.latitude || '',
+        longitude: address?.longitude || '',
+        references: address?.references || '',
+      },
+    };
+  }
+
 }

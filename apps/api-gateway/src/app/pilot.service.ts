@@ -5,10 +5,11 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { PilotDto, UserRegisterEvent } from '@puppilots/shared-dtos';
+import { PilotDto, CommonUserDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
 import { AppService } from '../app/app.service';
-import { Role } from '@prisma/client';
+
+
 
 @Injectable()
 export class PilotService {
@@ -29,8 +30,30 @@ export class PilotService {
       if (error.message === 'El usuario ya existe') {
         throw new HttpException(error.message, HttpStatus.CONFLICT);
       }
-
       throw new HttpException(error.message, error.code);
     }
   }
+
+  async getUserAndPilotById(id: string) {
+    try {
+      const result = await this.pilotClient.send({ cmd: 'get-pilot' }, id);
+      return await firstValueFrom(result);
+    } catch (error) {
+      throw new HttpException(error.message, error.code);
+    }
+  }
+
+  async updateUserAndPilotById(id: string, patch: CommonUserDto) {
+    try {
+      patch.userId = id;
+      const result = await this.pilotClient.send(
+        { cmd: 'update-pilot' },
+        { patch }
+      );
+      return await firstValueFrom(result);
+    } catch (error) {
+      throw new HttpException(error.message, error.code);
+    }
+  }
+
 }
