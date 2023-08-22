@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { PrismaService } from '@puppilots/shared-services';
 import * as bcrypt from 'bcrypt';
-import { CustomerDto, UserLoginDto } from '@puppilots/shared-dtos';
-import { UserExistException, UserNotExistException } from '@puppilots/shared-exceptions';
+import { CommonUserDto, CustomerDto, UserLoginDto } from '@puppilots/shared-dtos'
+import { UserExistException, UserNotExistException } from '@puppilots/shared-exceptions'
+
 
 @Injectable()
 export class AppService {
@@ -63,7 +64,7 @@ export class AppService {
         phone: customer.phone,
         user: {
           connect: {
-           id: user.id
+            id: user.id
           },
         },
         address: {
@@ -84,6 +85,48 @@ export class AppService {
 
     return newCustomer;
   }
+
+  async getUserAndCustomerById(id: string){
+    Logger.log("Llamando a getUserAndCustomerById del service");
+    Logger.log(id);
+
+    const user = await this.prismaService.user.findUnique({
+      where: { id: id }
+    });
+
+    const customer = await this.prismaService.costumer.findFirst({
+      where: { userId: id },
+      include: { address: true },
+    });
+
+    if (!customer || !user) {
+      throw new UserNotExistException();
+    }
+
+    const commonUserDto: CommonUserDto = {
+      userId: user.id,
+      role: user.role,
+      email: user.email,
+      name: customer?.name || '',
+      lastName: customer?.lastName || '',
+      dni: customer?.dni || '',
+      phone: customer?.phone || '',
+      address: {
+        country: customer?.address?.country || '',
+        city: customer?.address?.city || '',
+        street: customer?.address?.street || '',
+        number: customer?.address?.number || '',
+        floor: customer?.address?.floor || '',
+        department: customer?.address?.department || '',
+        latitude: customer?.address?.latitude || '',
+        longitude: customer?.address?.longitude || '',
+        references: customer?.address?.references || '',
+      },
+    };
+
+    return commonUserDto;
+  }
+
 
   async udpdate(customerUpdate: CustomerDto){
     const customer = await this.prismaService.costumer.findUnique({

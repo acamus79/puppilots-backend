@@ -18,7 +18,7 @@ export class AppService {
 
   /**
    * Validates a user's login credentials.
-   * 
+   *
    * @param userlogin - An object containing the user's email and password input.
    * @returns The user object if the login credentials are valid, otherwise null.
    */
@@ -31,16 +31,16 @@ export class AppService {
     }
     return null;
   }
-  
+
   /**
    * Generates a JWT access token for a user upon successful login.
-   * 
+   *
    * @param user - A User object containing the user's email, id, and role.
    * @returns An object containing the access token.
    */
   async login(user: User) {
     const payload = { email: user.email, sub: user.id, role: user.role };
-    Logger.log("LLegue", user.email);
+   // Logger.log("LLegue", user.email);
     return {
       access_token: this.jwtService.sign(payload)
     }
@@ -48,7 +48,7 @@ export class AppService {
   /**
    * Verifies the authenticity of a JWT access token by decoding it using the JwtService.
    * If the token is valid, the decoded payload is returned. Otherwise, an UnauthorizedTokenException is thrown.
-   * 
+   *
    * @param token - The JWT access token to be verified.
    * @returns The decoded payload if the token is valid.
    * @throws UnauthorizedTokenException if the token is invalid.
