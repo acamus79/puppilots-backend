@@ -1,9 +1,8 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CustomerDto, UserLoginDto, UserRegisterEvent } from '@puppilots/shared-dtos';
+import { CustomerDto, UserLoginDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
 import { AppService } from '../app/app.service';
-import { Role } from '@prisma/client';
 
 @Injectable()
 export class CustomerService {
@@ -38,7 +37,6 @@ export class CustomerService {
       return await firstValueFrom(result);
     } catch (error) {
       throw new HttpException(error.message, error.code);
-
     }
   }
 }
