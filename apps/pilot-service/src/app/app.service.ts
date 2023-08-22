@@ -127,6 +127,7 @@ export class AppService {
   private mapToCommonUserDto(user: User, pilot?: Pilot, address?:Address): CommonUserDto {
     return {
       userId: user.id,
+      id: pilot?.id,
       role: user.role,
       email: user.email,
       name: pilot?.name || '',
