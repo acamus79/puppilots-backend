@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Puppets, Role } from '@prisma/client';
-import { PuppetDto } from 'libs/shared-dtos/src/lib/puppet.dto';
+import { PuppetDto } from '@puppilots/shared-dtos';
 import { Roles } from './decorators/roles.decorator';
 import { RolesGuard } from './guards/roles.guard';
 import { PuppetService } from './puppet.service';
@@ -44,7 +44,7 @@ export class PuppetController {
     @Body() puppet: PuppetDto,
     @Param('id') puppetId: string,
     @UserId() userId: string
-  ): Promise<any> {
+  ): Promise<Puppets> {
     return await this.puppetService.update(puppet, puppetId, userId);
   }
 
@@ -59,7 +59,7 @@ export class PuppetController {
   async delete(
     @Param('id') puppetId: string,
     @UserId() userId: string
-  ): Promise<any> {
+  ): Promise<{ message: string }> {
     await this.puppetService.delete(puppetId, userId);
     return { message: 'Mascota eliminada correctamente' }
   }
@@ -71,7 +71,7 @@ export class PuppetController {
    */
   @Roles(Role.CUSTOMER, Role.PILOT)
   @Get('by-customer-id/:id')
-  async findPuppetByCustommrId(@Param('id') customerId: string): Promise<any> {
+  async findPuppetByCustommrId(@Param('id') customerId: string): Promise<Puppets[]> {
     return await this.puppetService.findPuppetByCustommrId(customerId);
   }
 }

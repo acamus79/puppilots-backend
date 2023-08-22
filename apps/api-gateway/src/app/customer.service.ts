@@ -13,7 +13,7 @@ export class CustomerService {
   async createUser(userNew: UserLoginDto) {
     try {
       const result = await this.customerClient.send({ cmd: "create-user-customer"}, userNew);
-      const customer = await firstValueFrom(result);
+      await firstValueFrom(result);
       return await this.authService.login({ email: userNew.email, password: userNew.password});
     } catch (error) {
       throw new HttpException(error.message, error.code);

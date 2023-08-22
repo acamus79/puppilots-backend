@@ -8,7 +8,7 @@ import {
   PuppilotsServerErrorException
 } from '@puppilots/shared-exceptions';
 import { PrismaService } from '@puppilots/shared-services';
-import { PuppetDto } from 'libs/shared-dtos/src/lib/puppet.dto';
+import { PuppetDto } from '@puppilots/shared-dtos';
 
 @Injectable()
 export class PuppetService {

@@ -1,4 +1,4 @@
-import { HttpException, Inject, Injectable, Logger } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { UserLoginDto, VerifyTokenDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';

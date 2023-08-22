@@ -17,8 +17,6 @@ async function bootstrap() {
       options: { port: 3002}
     });
 
-
-  const port = process.env.PORT || 3002;
   await app.listen();
   Logger.log(
     `🚀 Microservice Customer is running`
