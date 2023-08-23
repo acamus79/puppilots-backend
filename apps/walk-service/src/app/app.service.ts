@@ -49,7 +49,7 @@ export class AppService {
   }
 
   async aceptPilot(aceptPilot: AceptPilotDto , userId: string): Promise<Walks> {
-    let now = new Date();
+    const now = new Date();
     const walk = await this.prismaService.walks.update({
       where: { id: aceptPilot.walkId },
       data: {
