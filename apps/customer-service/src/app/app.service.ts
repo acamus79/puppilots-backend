@@ -34,7 +34,13 @@ export class AppService {
     delete user.password;
     delete user.tokenResetPassword;
     delete user.emailConfirmed;
-    
+
+    const customer = await this.prismaService.costumer.create({
+      data: {
+        userId: user.id,
+      },
+    });
+
     return user;
   }
 
@@ -104,6 +110,7 @@ export class AppService {
 
     const commonUserDto: CommonUserDto = {
       userId: user.id,
+      id: customer.id,
       role: user.role,
       email: user.email,
       name: customer?.name || '',
