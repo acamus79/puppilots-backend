@@ -7,3 +7,4 @@ export * from './lib/customer-not-authorized.exception';
 export * from './lib/puppilots-not-found.exception';
 export * from './lib/puppilots-server-error.exception';
 export * from './lib/invalid-customer.exception';
+export * from './lib/one-postulation-per-pilot.exception';

@@ -7,3 +7,6 @@ export * from './lib/verify-token.dto';
 export * from './lib/puppet.dto';
 export * from './lib/common-user.dto';
 export * from './lib/user-register-event.dto';
+export * from './lib/walk.dto';
+export * from './lib/payment.dto';
+export * from './lib/acept-pilot.dto';
