@@ -12,9 +12,13 @@ export class AppService {
 
   // Se crea un metodo getData que retorna un objeto con un mensaje
   getData(): { message: string } {
-    return { message: 'Hello API' };
+    return { message: 'Hello Pilot API' };
   }
-
+  /**
+   * Async method to create a user and pilot
+   * @param userNew
+   * @returns
+   */
   async createUserAndPilot(userNew: PilotDto) {
     // Se busca un usuario por email
     const userExist = await this.prismaService.user.findUnique({
@@ -61,11 +65,17 @@ export class AppService {
     return userCreated;
   }
 
+  /**
+   * Async method to get a user and pilot by id
+   * @param id
+   * @returns CommonUserDto
+   */
   async getUserAndPilotById(id: string): Promise<CommonUserDto> {
     // Se busca un usuario por id
     const user = await this.prismaService.user.findUniqueOrThrow({
       where: { id: id },
     });
+
     const pilot = await this.findPilotOrFail(id);
 
     // Si el usuario o el pilot no existe se lanza una excepcion
@@ -75,7 +85,11 @@ export class AppService {
     // Se retorna un objeto de tipo CommonUserDto
     return this.mapToCommonUserDto(user, pilot, pilot.address);
   }
-
+  /**
+   * Async method to update a pilot
+   * @param pilotUpdate
+   * @returns CommonUserDto
+   */
   async udpdate(pilotUpdate: CommonUserDto) : Promise<CommonUserDto>{
 
     const user = await this.prismaService.user.findUnique({
@@ -110,7 +124,11 @@ export class AppService {
     });
     return this.mapToCommonUserDto(user, pilotModified, await this.prismaService.address.findUnique({ where: { id: pilotModified.addressId }}));
   }
-
+  /**
+   * Private method to find a pilot by userId
+   * @param userId
+   * @returns Pilot
+   */
   private async findPilotOrFail(userId: string) {
     const pilot = await this.prismaService.pilot.findFirst({
       where: { userId },
@@ -123,7 +141,13 @@ export class AppService {
 
     return pilot;
   }
-
+  /**
+   * Private method to map a user and pilot to a CommonUserDto
+   * @param user
+   * @param pilot
+   * @param address
+   * @returns CommonUserDto
+   */
   private mapToCommonUserDto(user: User, pilot?: Pilot, address?:Address): CommonUserDto {
     return {
       userId: user.id,
