@@ -14,6 +14,10 @@ import { RolesGuard } from './guards/roles.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from '@puppilots/shared-services';
 import { BreedService } from './services/breed.service';
+import { PaymentController } from './payment.controller';
+import { PaymentService } from './payment.service';
+import { WalkService } from './walk.service';
+import { WalkController } from './walk.controller';
 
 @Module({
   imports: [
@@ -21,12 +25,14 @@ import { BreedService } from './services/breed.service';
       { name: 'EMAIL', transport: Transport.TCP },
       { name: 'AUTH', transport: Transport.TCP, options: { port: 3001 } },
       { name: 'CUSTOMER', transport: Transport.TCP, options: { port: 3002 } },
-      { name: "PILOT", transport: Transport.TCP, options: { port: 3003 } },
+      { name: 'PILOT', transport: Transport.TCP, options: { port: 3003 } },
+      { name: 'WALK', transport: Transport.TCP, options: { port: 3004 } },
+      { name: 'PAYMENT', transport: Transport.TCP, options: { port: 3005 } },
     ]),
 
     JwtModule.register({
-      secret: process.env.AUTH_JWT_SECRET
-    })
+      secret: process.env.AUTH_JWT_SECRET,
+    }),
   ],
   controllers: [
     AppController,
@@ -34,6 +40,8 @@ import { BreedService } from './services/breed.service';
     PuppetController,
     PilotController,
     ParamertersController,
+    PaymentController,
+    WalkController,
   ],
   providers: [
     RolesGuard,
@@ -44,6 +52,8 @@ import { BreedService } from './services/breed.service';
     CountryService,
     BreedService,
     PrismaService,
+    PaymentService,
+    WalkService,
   ],
 })
 export class AppModule {}
