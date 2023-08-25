@@ -18,6 +18,7 @@ async function bootstrap() {
     .setVersion("1.0")
     .addTag('puppilots')
     .addServer(process.env.SWAGGER_URL)
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
