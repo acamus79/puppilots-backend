@@ -3,6 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { Walks } from '@prisma/client';
 import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
+import { UserId } from './decorators/user-id.decorator';
 
 @Injectable()
 export class WalkService {
@@ -33,6 +34,18 @@ export class WalkService {
   async postulateWalk(walkId: string, userId: string): Promise<Walks> {
     const payload = { walkId, userId };
     return await this.sendCommand<Walks, { walkId: string , userId: string }>("postulate-walk", payload);
+  }
+
+  async getWalksPerPilot(userId: string): Promise<Walks[]> {
+    return await this.sendCommand<Walks[], string>("find-walks-per-pilot-active", userId);
+  }
+
+  async findWalksPerCityActive(city: string): Promise<Walks[]>{
+    return await this.sendCommand<Walks[], string>("find-walks-per-city", city)
+  }
+
+  async findWalksOfferPerPilot(userId: string): Promise<Walks[]>{
+    return await this.sendCommand<Walks[], string>("find-walks-offer", userId)
   }
 
   /**

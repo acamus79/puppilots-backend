@@ -4,7 +4,7 @@ import { WalkService } from './walk.service';
 import { Roles } from './decorators/roles.decorator';
 import { Role, Walks } from '@prisma/client';
 import { UserId } from './decorators/user-id.decorator';
-import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
+import { AceptPilotDto, WalkDto, WalkIdDto } from '@puppilots/shared-dtos';
 
 @UseGuards(RolesGuard)
 @Controller('walk')
@@ -23,12 +23,12 @@ export class WalkController {
 
 
   @Roles(Role.PILOT)
-  @Get('postulate/:id')
+  @Post('postulate')
   async postulateWalk(
-    @Param('id') walkId: string,
+    @Body() walk: WalkIdDto,
     @UserId() userId: string
   ): Promise<Walks> {
-    return await this.walkService.postulateWalk(walkId, userId);
+    return await this.walkService.postulateWalk(walk.walkId, userId);
   }
 
   @Roles(Role.CUSTOMER)
@@ -38,5 +38,30 @@ export class WalkController {
     @UserId() userId: string
   ): Promise<Walks> {
     return await this.walkService.aceptPilot(aceptPilotDto, userId);
+  }
+
+  @Roles(Role.PILOT)
+  @Get('per-pilot-active')
+  async findWalksPerPilotNotFinished(
+    @UserId() userId: string
+  ): Promise<Walks[]> {
+    return await this.walkService.getWalksPerPilot(userId);
+  }
+
+  @Roles(Role.PILOT)
+  @Get('city/:city')
+  async findWalksPerCityActive(
+    @UserId() userId: string,
+    @Param('city') city: string
+  ): Promise<Walks[]> {
+    return await this.walkService.findWalksPerCityActive(city);
+  }
+
+  @Roles(Role.PILOT)
+  @Get('offer')
+  async findWalksOfferPerPilot(
+    @UserId() userId: string
+  ): Promise<Walks[]> {
+    return await this.walkService.findWalksOfferPerPilot(userId);
   }
 }
