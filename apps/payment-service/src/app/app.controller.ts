@@ -1,8 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { PaypalOrderDto, PaymentOrderFrontDto, PaypalOrderCreate, PaymentOrderCreated } from '@puppilots/shared-dtos'
+import { PaymentOrderFrontDto, PaymentOrderCreated, PaypalCapturePayDto, AceptPilotDto } from '@puppilots/shared-dtos';
 
 @Controller()
 export class AppController {
@@ -11,5 +11,9 @@ export class AppController {
   @MessagePattern({ cmd: "generate-paypal-order" })
   async generatePaypalOrder(data: { paymentOrder: PaymentOrderFrontDto, userId: string}): Promise<PaymentOrderCreated> {
     return await this.appService.createOrder(data.paymentOrder, data.userId);
+  }
+  @MessagePattern({ cmd: "paypal-capture-pay" })
+  async paypalCapturePay(data: { paypalCapturePayDto: PaypalCapturePayDto, userId: string}): Promise<AceptPilotDto> {
+    return await this.appService.paypalCapturePay(data.paypalCapturePayDto, data.userId);
   }
 }

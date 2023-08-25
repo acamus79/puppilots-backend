@@ -1,13 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { PaymentOrderCreated, PaypalOrderDto, PaymentOrderFrontDto, PaypalLoginDto, PaypalOrderCreate  } from '@puppilots/shared-dtos';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { PaymentOrderCreated, PaypalOrderDto, PaymentOrderFrontDto, PaypalLoginDto, PaypalOrderCreate, PaypalCapturePayDto, AceptPilotDto, paypalCaptureResponseDto } from '@puppilots/shared-dtos';
+import { AxiosRequestConfig } from 'axios';
 import { HttpService } from "@nestjs/axios";
-import { first, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '@puppilots/shared-services';
 import { RpcException } from '@nestjs/microservices';
 import {
   PuppilotsServerErrorException
 } from '@puppilots/shared-exceptions';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class AppService {
@@ -81,6 +82,9 @@ export class AppService {
       if(!walk){
         throw new RpcException("Error no se encontro el walk");
       }
+      const custumer = await this.prismaService.costumer.findFirst({
+        where: { userId: userId }
+      });
 
       const paymentApp = await this.prismaService.payment.create({
         data: {
@@ -95,10 +99,21 @@ export class AppService {
             connect: {
               id: walk.id
             }
+          },
+          pilot: {
+            connect: {
+              id: paymentOrder.pilotId
+            }
+          },
+          costumer: {
+            connect: {
+              id: custumer.id
+            }
           }
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        this.logger.error(error)
         throw new PuppilotsServerErrorException();
       });      
     
@@ -106,6 +121,76 @@ export class AppService {
       this.logger.debug(error);
     }
     return paymentCreated
+  }
+
+  async paypalCapturePay(paypalCapturePayDto: PaypalCapturePayDto, userId: string): Promise<AceptPilotDto> {
+    let aceptPilotDto = new AceptPilotDto();
+    const paypalUrl = process.env.PAYPAL_URL;
+
+    try {
+      const login = await this.loginPaypal();
+      const config: AxiosRequestConfig = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  login.access_token,
+          'Prefer': 'return=representation', 
+        },
+      };
+
+      const data = null;
+      const paypalCaptureResponse: paypalCaptureResponseDto = await firstValueFrom(
+        this.httpService.post(paypalUrl + 'v2/checkout/orders/' + paypalCapturePayDto.paypalToken +'/capture', data, config)
+      ).then((resp) => {
+        this.logger.error(resp.data)
+        return resp.data
+      }).catch((error) => {
+        this.logger.error(error)
+        throw new PuppilotsServerErrorException();
+        
+      });
+      
+      this.logger.debug(paypalUrl + 'v2/checkout/orders/' + paypalCapturePayDto.paypalToken +'/capture')
+
+      const payment = await this.prismaService.payment.findFirst({
+        where: {orderId: paypalCapturePayDto.paypalToken}
+      })
+      .catch((error) => {
+        this.logger.error(error)
+        throw new PuppilotsServerErrorException();
+        
+      });
+
+      const paymentUpdate = await this.prismaService.payment.update({
+        where: { id: payment.id},
+        data: {
+          status: Status.COMPLETED,
+          capturePaymentRaw: JSON.stringify(paypalCaptureResponse)
+        },
+        include: {
+          walk: true
+        }
+      })
+      .catch((error) => {
+        this.logger.error(error)
+        throw new PuppilotsServerErrorException();
+        
+      });
+
+      aceptPilotDto = {
+        walkId: paymentUpdate.walkId,
+        pilotId: paymentUpdate.pilotId,
+      };
+
+      this.logger.debug(aceptPilotDto);
+      
+    } catch(error) {
+      this.logger.error(error);
+      throw new PuppilotsServerErrorException();
+    }
+
+    return aceptPilotDto;
   }
 
 
@@ -125,6 +210,10 @@ export class AppService {
     const result: PaypalLoginDto = await firstValueFrom(this.httpService.post(paypalUrl + 'v1/oauth2/token', data, config)).then((resp) => {
       return resp.data
     })
+    .catch((error) => {
+      this.logger.error(error);
+      throw new PuppilotsServerErrorException();
+    });
 
     return result;
 

@@ -4,7 +4,7 @@ import { PaymentService } from './payment.service';
 import { Roles } from './decorators/roles.decorator';
 import { Role } from '@prisma/client';
 import { UserId } from './decorators/user-id.decorator';
-import { PaymentOrderFrontDto } from '@puppilots/shared-dtos';
+import { PaymentOrderFrontDto, PaypalCapturePayDto } from '@puppilots/shared-dtos';
 
 @UseGuards(RolesGuard)
 @Controller('payment')
@@ -19,5 +19,14 @@ export class PaymentController {
     @UserId() userId: string
   ): Promise<any> {
     return await this.paymentService.paypalCreate(paymentOrder, userId);
+  }
+
+  @Roles(Role.CUSTOMER)
+  @Post('paypal/capture-pay')
+  async capturePaypalPay(
+    @Body() paypalCapturePayDto: PaypalCapturePayDto,
+    @UserId() userId: string
+  ): Promise<any> {
+    return await this.paymentService.paypalCapturePayDto(paypalCapturePayDto, userId);
   }
 }
