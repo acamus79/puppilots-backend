@@ -31,14 +31,14 @@ export class WalkController {
     return await this.walkService.postulateWalk(walk.walkId, userId);
   }
 
-  @Roles(Role.CUSTOMER)
+/*   @Roles(Role.CUSTOMER)
   @Post('acept-pilot')
   async acept(
     @Body() aceptPilotDto: AceptPilotDto,
     @UserId() userId: string
   ): Promise<Walks> {
     return await this.walkService.aceptPilot(aceptPilotDto, userId);
-  }
+  } */
 
   @Roles(Role.PILOT)
   @Get('per-pilot-active')

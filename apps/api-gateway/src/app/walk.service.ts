@@ -26,7 +26,7 @@ export class WalkService {
     return await this.sendCommand<Walks, { walkDto: WalkDto , userId: string }>("create-walk", payload);
   }
 
-  async aceptPilot(aceptPilot: AceptPilotDto,userId: string): Promise<Walks> {
+  async aceptPilot(aceptPilot: AceptPilotDto, userId: string): Promise<Walks> {
     const payload = { aceptPilot, userId };
     return await this.sendCommand<Walks, { aceptPilot: AceptPilotDto , userId: string }>("acept-pilot", payload);
   }

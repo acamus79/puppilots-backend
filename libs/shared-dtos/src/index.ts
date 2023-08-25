@@ -14,3 +14,13 @@ export * from './lib/walk.dto';
 export * from './lib/payment.dto';
 export * from './lib/acept-pilot.dto';
 export * from './lib/walk-id.dto';
+export * from './lib/paypal-order-created.dto';
+export * from './lib/paypal-order.dto';
+export * from './lib/payment-order-created.dto';
+export * from './lib/paypal-login.dto';
+
+export * from './lib/paypal-capture-response.dto';
+export * from './lib/payment-order-front.dto';
+export * from './lib/paypal-capture-pay.dto';
+
+
