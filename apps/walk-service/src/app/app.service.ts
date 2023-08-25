@@ -4,10 +4,12 @@ import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
 import {
   CustomerNotAuthorizedException,
   CustomerNotExistException,
-  InvalidCustomerException, OnePostulationPerPilotException, PuppilotsServerErrorException
+  InvalidCustomerException, OnePostulationPerPilotException, PuppilotsServerErrorException, UserNotExistException
 } from '@puppilots/shared-exceptions';
 import { PrismaService } from '@puppilots/shared-services';
 import { isNotIn } from 'class-validator';
+import { debug } from 'console';
+import { resourceLimits } from 'worker_threads';
 
 @Injectable()
 export class AppService {
@@ -146,5 +148,97 @@ export class AppService {
     if (customer.userId !== userId && !puppet) {
       throw new CustomerNotAuthorizedException();
     }
+  }
+
+  async findWalksPerCityActive(cityName: string, userId: string): Promise<Walks[]> {
+    const walks: Walks[] = await this.prismaService.$queryRaw` 
+    SELECT w.*
+    FROM walks AS w
+    JOIN puppets AS p ON w.puppetId = p.id
+    JOIN costumer AS c ON p.costumerId = c.id
+    JOIN address AS a ON c.addressId = a.id
+    WHERE a.name = ${cityName} AND w.endRealDate != null
+  `;
+    return walks;
+  }
+
+  async findWalksOfferPerPilot(userId: string): Promise<Walks[]> {
+    const pilot = await this.prismaService.pilot.findFirst({
+      where: { userId: userId },
+      include: {
+        address: true
+      }
+    });
+
+    this.logger.debug(userId);
+    this.logger.debug(pilot);
+
+    
+    if(!pilot) {
+      throw new UserNotExistException(); 
+      this.logger.error("El Paseador no existe para este usuario");
+    }
+    const walks: Walks[] = await this.prismaService.$queryRaw` 
+      SELECT w.*, p.*, p.name as puppetName, c.*, a.*
+      FROM "Walks" w
+      JOIN "Puppets" AS p ON w."puppetId" = p.id
+      JOIN "Costumer" AS c ON p."costumerId" = c.id
+      JOIN "Address" AS a ON c."addressId" = a.id
+      WHERE a."city" = ${pilot.address.city}
+      AND w."endRealDate" is null AND w."pilotId" is null
+    `;
+    this.logger.debug(pilot.address.city)
+    this.logger.debug(walks)
+    
+    return walks;
+  }
+
+  async findWalksPerCityNeedingPilot(cityName: string): Promise<Walks[]> {
+    const walks: Walks[] = await this.prismaService.$queryRaw` 
+      SELECT w.*, p.*, p.name as puppetName, c.*, a.*
+      FROM "Walks" w
+      JOIN "Puppets" AS p ON w."puppetId" = p.id
+      JOIN "Costumer" AS c ON p."costumerId" = c.id
+      JOIN "Address" AS a ON c."addressId" = a.id
+      WHERE a."city" = ${cityName}
+      AND w."endRealDate" is null AND w."pilotId" is null
+    `;
+    this.logger.debug(cityName)
+    this.logger.debug(walks)
+    
+    return walks;
+  }
+
+  async findWalksPerPilotNotFinished(userId: string): Promise<Walks[]> {
+    const pilot = await this.prismaService.pilot.findFirst({
+      where: { userId: userId }
+    });
+
+    this.logger.debug(userId);
+    this.logger.debug(pilot);
+
+    
+    if(!pilot) {
+      throw new UserNotExistException(); 
+      this.logger.error("El Paseador no existe para este usuario");
+    }
+
+    const walks: Walks[] = await this.prismaService.walks.findMany({
+      where: { pilotId: pilot.id, endRealDate: null },
+      include: { 
+        puppet: { 
+          include: { 
+            costumer: { 
+              include: { 
+                address: true 
+              } 
+            } 
+          } 
+        } 
+      }
+    });
+
+    this.logger.debug(walks)
+    return walks;
   }
 }

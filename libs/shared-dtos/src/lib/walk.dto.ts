@@ -23,7 +23,5 @@ export class WalkDto {
   puppetId: string
 
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty({ message: 'El identificador del Paseador es requerido' })
-  pilotId: string
+  pilotId?: string
 }

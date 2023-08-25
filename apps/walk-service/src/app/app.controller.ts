@@ -24,4 +24,21 @@ export class AppController {
     return await this.appService.postulateWalk(data.walkId, data.userId);
   }
 
+  @MessagePattern({ cmd: "find-walks-per-city" })
+  async findWalksPerCity(city: string): Promise<Walks[]> {
+    return await this.appService.findWalksPerCityNeedingPilot(city);
+  }
+
+  @MessagePattern({ cmd: "find-walks-per-pilot-active" })
+  async findWalksPerPilotNotFinished( userId: string ): Promise<Walks[]> {
+    return await this.appService.findWalksPerPilotNotFinished(userId);
+  }
+
+  @MessagePattern({ cmd: "find-walks-offer" })
+  async findWalksOfferPerPilot( userId: string ): Promise<Walks[]> {
+    return await this.appService.findWalksOfferPerPilot(userId);
+  }
+
+  
+
 }
