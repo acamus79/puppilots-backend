@@ -20,7 +20,7 @@ export class AppService {
     ) {};
   async createOrder(paymentOrder: PaymentOrderFrontDto, userId: string): Promise<PaymentOrderCreated> {
     let data = new PaypalOrderDto();
-    let paymentCreated = new PaymentOrderCreated();
+    const paymentCreated = new PaymentOrderCreated();
     const paypalUrl = process.env.PAYPAL_URL;
     try {
       const login = await this.loginPaypal();
@@ -197,7 +197,7 @@ export class AppService {
   async loginPaypal(): Promise<PaypalLoginDto> {
     const paypalAuthToken = process.env.PAYPAL_AUTH_TOKEN;
     const paypalUrl = process.env.PAYPAL_URL
-    const data: string = 'grant_type=client_credentials';
+    const data = 'grant_type=client_credentials';
 
     const config: AxiosRequestConfig = {
       method: 'post',
