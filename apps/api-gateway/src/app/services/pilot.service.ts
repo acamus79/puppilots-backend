@@ -7,7 +7,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { PilotDto, CommonUserDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
-import { AppService } from '../app/app.service';
+import { AppService } from '../app.service';
 
 
 

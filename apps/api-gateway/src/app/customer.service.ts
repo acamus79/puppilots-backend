@@ -15,7 +15,7 @@ export class CustomerService {
     try {
       const result = await this.customerClient.send({ cmd: "create-user-customer"}, userNew);
       await firstValueFrom(result);
-     
+
       return await this.authService.login({ email: userNew.email, password: userNew.password});
     } catch (error) {
       throw new HttpException(error.message, error.code);
@@ -25,8 +25,8 @@ export class CustomerService {
   async create(customer: CustomerDto) {
     try {
       const result = await this.customerClient.send({cmd: "create-customer"}, customer);
-      
-      return await firstValueFrom(result);      
+
+      return await firstValueFrom(result);
     } catch (error) {
       throw new HttpException(error.message, error.code);
     }
@@ -35,7 +35,7 @@ export class CustomerService {
   async update(customer: CustomerDto){
     try {
       const result = await this.customerClient.send({cmd: "update-customer"}, customer);
-      
+
       return await firstValueFrom(result);
     } catch (error) {
       throw new HttpException(error.message, error.code);

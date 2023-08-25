@@ -4,12 +4,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CustomerController } from './customer.controller';
 import { PuppetController } from './puppet.controller';
-import { PilotController } from './pilot.controller';
-import { PilotService } from './pilot.service';
+import { PilotController } from './controller/pilot.controller';
+import { ParamertersController } from './controller/parameters.controller';
+import { PilotService } from './services/pilot.service';
 import { CustomerService } from './customer.service';
+import { CountryService } from './services/country.service';
 import { PuppetService } from './puppet.service';
 import { RolesGuard } from './guards/roles.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { PrismaService } from '@puppilots/shared-services';
+import { BreedService } from './services/breed.service';
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
 import { WalkService } from './walk.service';
@@ -25,6 +29,7 @@ import { WalkController } from './walk.controller';
       { name: 'WALK', transport: Transport.TCP, options: { port: 3004 } },
       { name: 'PAYMENT', transport: Transport.TCP, options: { port: 3005 } },
     ]),
+
     JwtModule.register({
       secret: process.env.AUTH_JWT_SECRET,
     }),
@@ -34,6 +39,7 @@ import { WalkController } from './walk.controller';
     CustomerController,
     PuppetController,
     PilotController,
+    ParamertersController,
     PaymentController,
     WalkController,
   ],
@@ -43,6 +49,9 @@ import { WalkController } from './walk.controller';
     PilotService,
     CustomerService,
     PuppetService,
+    CountryService,
+    BreedService,
+    PrismaService,
     PaymentService,
     WalkService,
   ],

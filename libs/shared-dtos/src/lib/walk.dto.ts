@@ -12,7 +12,7 @@ export class WalkDto {
   @IsDateString()
   @IsNotEmpty({ message: 'La fecha de fin es requerida' })
   endDate: Date
-  
+
   @ApiProperty()
   @IsString()
   observations: string
@@ -23,7 +23,5 @@ export class WalkDto {
   puppetId: string
 
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty({ message: 'El identificador del Paseador es requerido' })
-  pilotId: string
+  pilotId?: string
 }
