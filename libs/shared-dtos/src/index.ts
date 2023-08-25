@@ -13,3 +13,4 @@ export * from './lib/breed.dto';
 export * from './lib/walk.dto';
 export * from './lib/payment.dto';
 export * from './lib/acept-pilot.dto';
+export * from './lib/walk-id.dto';
