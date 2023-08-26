@@ -19,11 +19,11 @@ module.exports = {
     },
     {
       name: 'walk-service',
-      script: './dist/apps/api-gateway/main.js',
+      script: './dist/apps/walk-service/main.js',
     },
     {
       name: 'payment-service',
-      script: './dist/apps/api-gateway/main.js',
+      script: './dist/apps/payment-service/main.js',
     },
     {
       name: 'api-gateway',
