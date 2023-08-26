@@ -18,6 +18,14 @@ module.exports = {
       script: './dist/apps/email-service/main.js',
     },
     {
+      name: 'walk-service',
+      script: './dist/apps/api-gateway/main.js',
+    },
+    {
+      name: 'payment-service',
+      script: './dist/apps/api-gateway/main.js',
+    },
+    {
       name: 'api-gateway',
       script: './dist/apps/api-gateway/main.js',
     },
