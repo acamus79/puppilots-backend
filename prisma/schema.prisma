@@ -81,9 +81,9 @@ model Address {
 model Puppets {
   id           String    @id @default(uuid()) @db.Uuid
   name         String    @db.VarChar(50)
-  size         Size      @default(MEDIUM)
+  size         Size      @default(MEDIANO)
   breed        String?   @default("Mestizo") @db.VarChar(50)
-  sex          Sex?      @default(OTHER)
+  sex          Sex?      @default(OTRO)
   observations String?
   costumerId   String?   @db.Uuid
   costumer     Costumer? @relation(fields: [costumerId], references: [id])
@@ -131,7 +131,7 @@ model Payment {
   id                String    @id @default(uuid()) @db.Uuid
   amount            Decimal   @db.Decimal(10, 2)
   orderId           String?   @db.VarChar(50)
-  status            Status    @default(CREATED)
+  status            Status    @default(CREADO)
   capturePaymentRaw Json?     @db.Json
   createdAt         DateTime  @default(now())
   createdById       String?   @db.Uuid
@@ -153,22 +153,21 @@ enum Role {
 }
 
 enum Size {
-  SMALL
-  MEDIUM
-  BIG
+  CHICO
+  MEDIANO
+  GRANDE
 }
 
 enum Sex {
-  MALE
-  FEMALE
-  OTHER
+  MACHO
+  HEMBRA
+  OTRO
 }
 
 enum Status {
-  CREATED
-  COMPLETED
-  CANCELED
-  APPROVED
+  CREADO
+  COMPLETADO
+  CANCELADO
 }
 
 model Breed {

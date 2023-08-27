@@ -2,7 +2,6 @@ import { ApiProperty } from "@nestjs/swagger"
 import { Role } from "@prisma/client"
 import { IsEmail, IsStrongPassword } from "class-validator"
 import { CustomerDto } from "./customer.dto"
-import { UserLoginDto } from "./user-login.dto"
 import { PilotDto } from "./pilot.dto"
 
 
