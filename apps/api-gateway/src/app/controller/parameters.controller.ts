@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { CountryService } from '../services/country.service';
 import { BreedService } from '../services/breed.service';
-import { ApiExtraModels } from '@nestjs/swagger';
+import { ApiExtraModels, ApiOperation } from '@nestjs/swagger';
 import { CountryDto, BreedDto } from '@puppilots/shared-dtos';
 
 
@@ -13,12 +13,20 @@ export class ParamertersController {
     private readonly breedService: BreedService
     ){}
 
+ /**
+  * Esto es una prueba
+  * @returns  List of all countries with their cities
+  */
   @Get('country')
+  @ApiOperation({ summary: 'Gets all countries',
+                  description: 'Returns a list of all countries with their cities'
+  })
   async findAll(){
     return await this.countryService.findAll();
   }
 
   @Get('breed')
+  @ApiOperation({ summary: 'Gets all dog breeds' })
   async findAllBreeds(){
     return await this.breedService.findAll();
   }
