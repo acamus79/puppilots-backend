@@ -26,8 +26,8 @@ export class AppService {
       const login = await this.loginPaypal();
       const valorBase =  parseInt(process.env.APP_WALK_PRICE);
       const valorPaseo = valorBase*paymentOrder.quantity;
-  
-      data = { 
+
+      data = {
         application_context: {
           cancel_url: "https://puppilots.com/payment/cancel",
           return_url: "https://puppilots.com/payment/return_url"
@@ -62,10 +62,10 @@ export class AppService {
       const config: AxiosRequestConfig = {
         method: 'post',
         maxBodyLength: Infinity,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' +  login.access_token,
-          'Prefer': 'return=representation', 
+          'Prefer': 'return=representation',
         },
       };
       this.logger.debug(data)
@@ -115,8 +115,8 @@ export class AppService {
       .catch((error) => {
         this.logger.error(error)
         throw new PuppilotsServerErrorException();
-      });      
-    
+      });
+
     } catch(error) {
       this.logger.debug(error);
     }
@@ -132,10 +132,10 @@ export class AppService {
       const config: AxiosRequestConfig = {
         method: 'post',
         maxBodyLength: Infinity,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' +  login.access_token,
-          'Prefer': 'return=representation', 
+          'Prefer': 'return=representation',
         },
       };
 
@@ -148,9 +148,9 @@ export class AppService {
       }).catch((error) => {
         this.logger.error(error)
         throw new PuppilotsServerErrorException();
-        
+
       });
-      
+
       this.logger.debug(paypalUrl + 'v2/checkout/orders/' + paypalCapturePayDto.paypalToken +'/capture')
 
       const payment = await this.prismaService.payment.findFirst({
@@ -159,13 +159,13 @@ export class AppService {
       .catch((error) => {
         this.logger.error(error)
         throw new PuppilotsServerErrorException();
-        
+
       });
 
       const paymentUpdate = await this.prismaService.payment.update({
         where: { id: payment.id},
         data: {
-          status: Status.COMPLETED,
+          status: Status.COMPLETADO,
           capturePaymentRaw: JSON.stringify(paypalCaptureResponse)
         },
         include: {
@@ -175,7 +175,7 @@ export class AppService {
       .catch((error) => {
         this.logger.error(error)
         throw new PuppilotsServerErrorException();
-        
+
       });
 
       aceptPilotDto = {
@@ -184,7 +184,7 @@ export class AppService {
       };
 
       this.logger.debug(aceptPilotDto);
-      
+
     } catch(error) {
       this.logger.error(error);
       throw new PuppilotsServerErrorException();
@@ -202,8 +202,8 @@ export class AppService {
     const config: AxiosRequestConfig = {
       method: 'post',
       maxBodyLength: Infinity,
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded', 
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic ' + paypalAuthToken
       },
     };
