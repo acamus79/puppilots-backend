@@ -179,7 +179,7 @@ export class AppService {
       this.logger.error("El Paseador no existe para este usuario");
     }
     const walks: Walks[] = await this.prismaService.$queryRaw` 
-      SELECT w.*, p.*, p.name as puppetName, c.*, a.*
+      SELECT w.id as walksid, w.*, p.*, p.name as puppetName, c.*, a.*
       FROM "Walks" w
       JOIN "Puppets" AS p ON w."puppetId" = p.id
       JOIN "Costumer" AS c ON p."costumerId" = c.id
