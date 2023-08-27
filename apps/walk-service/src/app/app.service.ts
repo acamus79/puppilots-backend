@@ -182,17 +182,19 @@ export class AppService {
 
     //Buscar los paseos que esten activos y que no tengan paseador asignado
     const walks: Walks[] = await this.prismaService.$queryRaw`
-      SELECT w.id as walkId, w.*, p.name as puppetName, p.breed, p.size,p.sex, c.*,
-      a.country, a.city, a.street, a.number, a.floor, a.department, a.latitude, a.longitude, a.references
+      SELECT w.id as "walkId", wp.active, w.*, p.name as "puppetName", p.breed, p.size,p.sex, c.*,
+      a.country, a.city, a.street, a.number, a.floor, a.department, a.latitude,
+      a.longitude, a.references
       FROM "Walks" w
       JOIN "Puppets" AS p ON w."puppetId" = p.id
       JOIN "Costumer" AS c ON p."costumerId" = c.id
       JOIN "Address" AS a ON c."addressId" = a.id
+      LEFT JOIN "walks_pilots" AS wp ON w."id"= wp."idWalks" AND wp."idPilot"::text = ${pilot.id}
       WHERE a."city" = ${pilot.address.city}
       AND w."endRealDate" is null AND w."pilotId" is null
     `;
-    //this.logger.debug(pilot.address.city)
-    //this.logger.debug(walks)
+    this.logger.debug(pilot.address.city)
+    this.logger.debug(walks)
 
     const mapWalks = walks.map(item => {
       return {
