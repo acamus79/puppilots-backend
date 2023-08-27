@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@puppilots/shared-services';
 import { Address, Pilot, Role, User } from '@prisma/client';
 import { CommonUserDto, PilotDto } from '@puppilots/shared-dtos';
