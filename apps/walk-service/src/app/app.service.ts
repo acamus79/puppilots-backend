@@ -4,7 +4,10 @@ import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
 import {
   CustomerNotAuthorizedException,
   CustomerNotExistException,
-  InvalidCustomerException, OnePostulationPerPilotException, PuppilotsServerErrorException, UserNotExistException
+  InvalidCustomerException,
+  OnePostulationPerPilotException,
+  PuppilotsServerErrorException,
+  UserNotExistException
 } from '@puppilots/shared-exceptions';
 import { PrismaService } from '@puppilots/shared-services';
 
@@ -44,9 +47,9 @@ export class AppService {
         },
       },
     })
-      .catch(() => {
-        throw new PuppilotsServerErrorException();
-      });
+    .catch(() => {
+      throw new PuppilotsServerErrorException();
+    });
 
     this.logger.debug('Walk created successfully');
     return walk;
@@ -75,11 +78,11 @@ export class AppService {
         },
       }
     })
-      .catch((error) => {
-        this.logger.debug(error);
+    .catch((error) => {
+      this.logger.debug(error);
 
-        throw new PuppilotsServerErrorException();
-      });
+      throw new PuppilotsServerErrorException();
+    });
 
     // activate change to false in all
     await this.prismaService.walksPilots.updateMany({
@@ -88,9 +91,9 @@ export class AppService {
         active: false
       }
     })
-      .catch(() => {
-        throw new PuppilotsServerErrorException();
-      });
+    .catch(() => {
+      throw new PuppilotsServerErrorException();
+    });
 
     this.logger.debug('Pilot acepted successfully.');
 
@@ -110,9 +113,9 @@ export class AppService {
     const pilot = await this.prismaService.pilot.findFirst({
       where: { userId: userId }
     })
-      .catch(() => {
-        throw new PuppilotsServerErrorException();
-      });
+    .catch(() => {
+      throw new PuppilotsServerErrorException();
+    });
 
     const walkPilot = await this.prismaService.walksPilots.create({
       data: {
@@ -120,9 +123,9 @@ export class AppService {
         idWalks: walkId
       },
     })
-      .catch(() => {
-        throw new OnePostulationPerPilotException();
-      });
+    .catch(() => {
+      throw new OnePostulationPerPilotException();
+    });
 
     this.logger.debug('Postulation created successfully.');
 
@@ -144,25 +147,23 @@ export class AppService {
       throw new InvalidCustomerException();
     }
 
-    const customer = await this.prismaService.costumer
-      .findFirst({
-        where: { userId: userId },
-      })
-      .catch(() => {
-        throw new PuppilotsServerErrorException();
-      });
+    const customer = await this.prismaService.costumer.findFirst({
+      where: { userId: userId },
+    })
+    .catch(() => {
+      throw new PuppilotsServerErrorException();
+    });
 
     if (!customer) {
       throw new CustomerNotExistException();
     }
 
-    const puppet = await this.prismaService.puppets
-      .findFirst({
-        where: { costumerId: customer.id, id: puppetId },
-      })
-      .catch(() => {
-        throw new PuppilotsServerErrorException();
-      });
+    const puppet = await this.prismaService.puppets.findFirst({
+      where: { costumerId: customer.id, id: puppetId },
+    })
+    .catch(() => {
+      throw new PuppilotsServerErrorException();
+    });
 
     if (customer.userId !== userId && !puppet) {
       throw new CustomerNotAuthorizedException();
