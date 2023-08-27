@@ -35,10 +35,18 @@ export class AppService {
     delete user.tokenResetPassword;
     delete user.emailConfirmed;
 
+    const address = await this.prismaService.address.create({
+      data: {
+        city: "",
+        country: ""
+      }
+    });
+
     const customer = await this.prismaService.costumer.create({
       data: {
         userId: user.id,
-      },
+        addressId: address.id
+      }   
     });
 
     return user;
@@ -147,6 +155,9 @@ export class AppService {
     const customerModified = await this.prismaService.costumer.update({
       where: {
         id: customer.id,
+      },
+      include: {
+        address: true,
       },
       data: {
         name: customerUpdate.name,
