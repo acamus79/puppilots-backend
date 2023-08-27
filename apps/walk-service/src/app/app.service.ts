@@ -241,4 +241,32 @@ export class AppService {
     this.logger.debug(walks)
     return walks;
   }
+
+  async findWalksPostulations(walkId: string, userId: string): Promise<WalksPilots[]> {
+    this.logger.debug({ walkID: walkId, userId: userId });
+    const walk = await this.prismaService.walks.findFirst({
+      where: { id: walkId, createdById: userId }
+    })
+    this.logger.debug("WalkPilot Find:", walk)
+
+    if(!walk) {
+      throw new CustomerNotAuthorizedException();
+    }
+
+    const walksPilots = await this.prismaService.walksPilots.findMany({
+      where: {
+        idWalks: walkId
+      },
+      include: {
+        pilots: {
+          include: {
+            address: true
+          }
+        },
+        walks: true
+      }
+    });
+
+    return walksPilots;
+  }
 }

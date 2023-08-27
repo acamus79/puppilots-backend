@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { RolesGuard } from './guards/roles.guard';
 import { WalkService } from './walk.service';
 import { Roles } from './decorators/roles.decorator';
-import { Role, Walks } from '@prisma/client';
+import { Role, Walks, WalksPilots } from '@prisma/client';
 import { UserId } from './decorators/user-id.decorator';
 import { AceptPilotDto, WalkDto, WalkIdDto } from '@puppilots/shared-dtos';
 
@@ -31,15 +31,6 @@ export class WalkController {
     return await this.walkService.postulateWalk(walk.walkId, userId);
   }
 
-/*   @Roles(Role.CUSTOMER)
-  @Post('acept-pilot')
-  async acept(
-    @Body() aceptPilotDto: AceptPilotDto,
-    @UserId() userId: string
-  ): Promise<Walks> {
-    return await this.walkService.aceptPilot(aceptPilotDto, userId);
-  } */
-
   @Roles(Role.PILOT)
   @Get('per-pilot-active')
   async findWalksPerPilotNotFinished(
@@ -63,5 +54,15 @@ export class WalkController {
     @UserId() userId: string
   ): Promise<Walks[]> {
     return await this.walkService.findWalksOfferPerPilot(userId);
+  }
+
+  @Roles(Role.CUSTOMER)
+  @Post('postulations')
+  async   findWalksPostulations
+  (
+    @Body() walkId: string,
+    @UserId() userId: string
+  ): Promise<WalksPilots[]> {
+    return await this.walkService.findWalksPostulations(walkId, userId);
   }
 }

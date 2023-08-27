@@ -39,6 +39,12 @@ export class AppController {
     return await this.appService.findWalksOfferPerPilot(userId);
   }
 
+  @MessagePattern({ cmd: "find-walk-postulations" })
+  async findWalksPostulations( data: { walkId: string, userId: string} ): Promise<WalksPilots[]> {
+    const walkId = data.walkId['walkId'];
+    return await this.appService.findWalksPostulations(walkId, data.userId);
+  }
+
   
 
 }

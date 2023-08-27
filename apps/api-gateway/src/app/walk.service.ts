@@ -1,6 +1,6 @@
 import { HttpException, Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Walks } from '@prisma/client';
+import { Walks, WalksPilots } from '@prisma/client';
 import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
 import { UserId } from './decorators/user-id.decorator';
@@ -46,6 +46,11 @@ export class WalkService {
 
   async findWalksOfferPerPilot(userId: string): Promise<Walks[]>{
     return await this.sendCommand<Walks[], string>("find-walks-offer", userId)
+  }
+
+  async findWalksPostulations(walkId: string, userId: string): Promise<WalksPilots[]> {
+    const payload = { walkId, userId };
+    return await this.sendCommand<WalksPilots[], { walkId: string, userId: string}>("find-walk-postulations", payload)
   }
 
   /**
