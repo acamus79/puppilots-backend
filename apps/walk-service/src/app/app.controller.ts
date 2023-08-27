@@ -1,8 +1,8 @@
-import {  Controller, Get, Logger } from '@nestjs/common';
+import {  Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 
 import { AppService } from './app.service';
-import { AceptPilotDto, UserLoginDto, WalkDto } from '@puppilots/shared-dtos'
+import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos'
 import { Walks, WalksPilots } from '@prisma/client';
 
 @Controller()
@@ -39,6 +39,5 @@ export class AppController {
     return await this.appService.findWalksOfferPerPilot(userId);
   }
 
-  
 
 }

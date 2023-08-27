@@ -7,9 +7,8 @@ import {
   InvalidCustomerException, OnePostulationPerPilotException, PuppilotsServerErrorException, UserNotExistException
 } from '@puppilots/shared-exceptions';
 import { PrismaService } from '@puppilots/shared-services';
-import { isNotIn } from 'class-validator';
-import { debug } from 'console';
-import { resourceLimits } from 'worker_threads';
+
+
 
 @Injectable()
 export class AppService {
@@ -96,7 +95,7 @@ export class AppService {
     });
 
     const walkPilot = await this.prismaService.walksPilots.create({
-      data: { 
+      data: {
         idPilot: pilot.id,
         idWalks: walkId
       },
@@ -151,7 +150,7 @@ export class AppService {
   }
 
   async findWalksPerCityActive(cityName: string, userId: string): Promise<Walks[]> {
-    const walks: Walks[] = await this.prismaService.$queryRaw` 
+    const walks: Walks[] = await this.prismaService.$queryRaw`
     SELECT w.*
     FROM walks AS w
     JOIN puppets AS p ON w.puppetId = p.id
@@ -163,6 +162,8 @@ export class AppService {
   }
 
   async findWalksOfferPerPilot(userId: string): Promise<Walks[]> {
+
+    //Buscar el paseador por el userId
     const pilot = await this.prismaService.pilot.findFirst({
       where: { userId: userId },
       include: {
@@ -173,40 +174,54 @@ export class AppService {
     this.logger.debug(userId);
     this.logger.debug(pilot);
 
-    
+    //Si no existe el paseador para este usuario arrojar excepcion
     if(!pilot) {
-      throw new UserNotExistException(); 
+      throw new UserNotExistException();
       this.logger.error("El Paseador no existe para este usuario");
     }
-    const walks: Walks[] = await this.prismaService.$queryRaw` 
-      SELECT w.id as walksid, w.*, p.*, p.name as puppetName, c.*, a.*
+
+    //Buscar los paseos que esten activos y que no tengan paseador asignado
+    const walks: Walks[] = await this.prismaService.$queryRaw`
+      SELECT w.id as "walkId", wp.active, w.*, p.name as "puppetName", p.breed, p.size,p.sex, c.*,
+      a.country, a.city, a.street, a.number, a.floor, a.department, a.latitude,
+      a.longitude, a.references
       FROM "Walks" w
       JOIN "Puppets" AS p ON w."puppetId" = p.id
       JOIN "Costumer" AS c ON p."costumerId" = c.id
       JOIN "Address" AS a ON c."addressId" = a.id
+      LEFT JOIN "walks_pilots" AS wp ON w."id"= wp."idWalks" AND wp."idPilot"::text = ${pilot.id}
       WHERE a."city" = ${pilot.address.city}
       AND w."endRealDate" is null AND w."pilotId" is null
     `;
     this.logger.debug(pilot.address.city)
     this.logger.debug(walks)
-    
-    return walks;
+
+    const mapWalks = walks.map(item => {
+      return {
+        ...item,
+        customerId: item.id,
+        id: undefined
+      };
+    });
+
+    return mapWalks;
   }
 
   async findWalksPerCityNeedingPilot(cityName: string): Promise<Walks[]> {
-    const walks: Walks[] = await this.prismaService.$queryRaw` 
-      SELECT w.*, p.*, p.name as puppetName, c.*, a.*
+    const walks: Walks[] = await this.prismaService.$queryRaw`
+      SELECT p.*, p.name as puppetName, c.*, a.*, w.*
       FROM "Walks" w
       JOIN "Puppets" AS p ON w."puppetId" = p.id
       JOIN "Costumer" AS c ON p."costumerId" = c.id
       JOIN "Address" AS a ON c."addressId" = a.id
       WHERE a."city" = ${cityName}
-      AND w."endRealDate" is null AND w."pilotId" is null
+      AND w."endRealDate" is null AND w."pilotId" is not null
     `;
     this.logger.debug(cityName)
     this.logger.debug(walks)
-    
+
     return walks;
+
   }
 
   async findWalksPerPilotNotFinished(userId: string): Promise<Walks[]> {
@@ -217,28 +232,30 @@ export class AppService {
     this.logger.debug(userId);
     this.logger.debug(pilot);
 
-    
+
     if(!pilot) {
-      throw new UserNotExistException(); 
+      throw new UserNotExistException();
       this.logger.error("El Paseador no existe para este usuario");
     }
 
     const walks: Walks[] = await this.prismaService.walks.findMany({
       where: { pilotId: pilot.id, endRealDate: null },
-      include: { 
-        puppet: { 
-          include: { 
-            costumer: { 
-              include: { 
-                address: true 
-              } 
-            } 
-          } 
-        } 
+      include: {
+        puppet: {
+          include: {
+            costumer: {
+              include: {
+                address: true
+              }
+            }
+          }
+        }
       }
     });
 
     this.logger.debug(walks)
     return walks;
   }
+
+
 }
