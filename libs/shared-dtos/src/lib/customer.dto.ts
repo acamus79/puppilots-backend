@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import {  IsEmpty, IsUUID } from "class-validator"
+import { IsUUID } from "class-validator"
 import { AddressDto } from "./address.dto"
 import { PuppetDto } from "./puppet.dto"
 

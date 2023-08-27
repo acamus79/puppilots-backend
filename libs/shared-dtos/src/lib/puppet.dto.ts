@@ -19,13 +19,13 @@ export class PuppetDto {
   @IsUUID()
   customerId: string
 
-  @ApiProperty({enum:[Size.MEDIUM, Size.BIG, Size.SMALL]})
+  @ApiProperty({enum:[Size.MEDIANO, Size.GRANDE, Size.CHICO]})
   size: Size
 
   @ApiProperty()
   breed: string
 
-  @ApiProperty({enum: [Sex.OTHER, Sex.FEMALE, Sex.MALE]})
+  @ApiProperty({enum: [Sex.OTRO, Sex.HEMBRA, Sex.MACHO]})
   sex: Sex
 
   @ApiProperty()
