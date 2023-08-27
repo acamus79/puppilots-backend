@@ -3,7 +3,6 @@ import { ClientProxy } from '@nestjs/microservices';
 import { Walks } from '@prisma/client';
 import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
 import { firstValueFrom } from 'rxjs';
-import { UserId } from './decorators/user-id.decorator';
 
 @Injectable()
 export class WalkService {
@@ -46,6 +45,7 @@ export class WalkService {
 
   async findWalksOfferPerPilot(userId: string): Promise<Walks[]>{
     return await this.sendCommand<Walks[], string>("find-walks-offer", userId)
+
   }
 
   /**

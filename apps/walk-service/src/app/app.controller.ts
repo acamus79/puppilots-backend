@@ -39,6 +39,5 @@ export class AppController {
     return await this.appService.findWalksOfferPerPilot(userId);
   }
 
-  
 
 }
