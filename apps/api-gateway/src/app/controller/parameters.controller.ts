@@ -13,20 +13,16 @@ export class ParamertersController {
     private readonly breedService: BreedService
     ){}
 
- /**
-  * Esto es una prueba
-  * @returns  List of all countries with their cities
-  */
   @Get('country')
   @ApiOperation({ summary: 'Gets all countries',
-                  description: 'Returns a list of all countries with their cities'
-  })
+                  description: 'Returns a list of all countries with their cities'})
   async findAll(){
     return await this.countryService.findAll();
   }
 
   @Get('breed')
-  @ApiOperation({ summary: 'Gets all dog breeds' })
+  @ApiOperation({ summary: 'Gets dog breeds',
+                  description: 'Returns a list of all dog breeds'})
   async findAllBreeds(){
     return await this.breedService.findAll();
   }
