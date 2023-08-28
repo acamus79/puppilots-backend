@@ -14,9 +14,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle("Puppilots")
-    .setDescription("Api gateway")
-    .setVersion("1.0")
-    .addTag('puppilots')
+    .setDescription("API REST Gateway for Puppilots.com")
+    .setVersion("1.0.0.1b")
+    .addTag('Endpoints')
     .addServer(process.env.SWAGGER_URL)
     .addBearerAuth()
     .build();
@@ -31,7 +31,7 @@ async function bootstrap() {
   app.enableCors();
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://puppilots.com/${globalPrefix}`
   );
 }
 
