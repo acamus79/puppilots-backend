@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
-import { EventEmitter } from 'stream';
 
 import { AppService } from './app.service';
 import { UserRegisterEvent } from '@puppilots/shared-dtos';

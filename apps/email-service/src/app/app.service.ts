@@ -35,6 +35,7 @@ export class AppService {
                      .catch( err => {
                         Logger.error(`Error al enviar correo a ${data.email}.`, err)
                       });
+    Logger.debug(response)
   }
 
   private getTemplate(fileName: string){

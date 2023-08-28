@@ -7,6 +7,7 @@ import { UserId } from './decorators/user-id.decorator';
 import { WalkDto, WalkIdDto } from '@puppilots/shared-dtos';
 import { ApiOperation } from '@nestjs/swagger';
 
+
 @UseGuards(RolesGuard)
 @Controller('walk')
 export class WalkController {

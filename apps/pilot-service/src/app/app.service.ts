@@ -61,8 +61,8 @@ export class AppService {
     });
 
     // Se retorna un objeto de tipo UserAndPilotDto omitiendo el password
-    const { password, ...userCreated } = userAndPilot;
-    return userCreated;
+    delete userAndPilot.password
+    return userAndPilot;
   }
 
   /**

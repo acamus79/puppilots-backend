@@ -1,4 +1,3 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 
 export class InvalidCredentialsException extends RpcException {
