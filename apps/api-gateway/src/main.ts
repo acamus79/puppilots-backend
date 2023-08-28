@@ -14,9 +14,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle("Puppilots")
-    .setDescription("Api gateway")
+    .setDescription("API REST Gateway for Puppilots.com")
     .setVersion("1.0.0.1b")
-    .addTag('puppilots')
+    .addTag('Endpoints')
     .addServer(process.env.SWAGGER_URL)
     .addBearerAuth()
     .build();
