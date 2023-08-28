@@ -37,10 +37,11 @@ export class PuppetController {
    * @param data - The puppet ID and user ID.
    */
   @MessagePattern({ cmd: "delete-puppet" })
-  async deletePuppet(data: { puppetId: string, userId: string }): Promise<void> {
+  async deletePuppet(data: { puppetId: string, userId: string }): Promise<{ success: true }> {
+    Logger.debug("delete-puppet")
     Logger.debug(data.puppetId)
     await this.puppetService.deletePuppet(data.puppetId, data.userId);
-    return;
+    return { success: true };
   }
 
   /**

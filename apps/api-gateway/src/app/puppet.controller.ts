@@ -60,8 +60,13 @@ export class PuppetController {
     @Param('id') puppetId: string,
     @UserId() userId: string
   ): Promise<{ message: string }> {
-    await this.puppetService.delete(puppetId, userId);
-    return { message: 'Mascota eliminada correctamente' }
+    const result = await this.puppetService.delete(puppetId, userId);
+    if(result) {
+      return { message: 'Mascota eliminada correctamente' }
+    } else {
+      return { message: 'Error al eliminar la mascota' }
+    }
+    
   }
 
   /**
