@@ -5,6 +5,7 @@ import { Roles } from './decorators/roles.decorator';
 import { RolesGuard } from './guards/roles.guard';
 import { PuppetService } from './puppet.service';
 import { UserId } from './decorators/user-id.decorator';
+import { ApiOperation } from '@nestjs/swagger';
 
 @UseGuards(RolesGuard)
 @Controller('puppet')
@@ -24,6 +25,8 @@ export class PuppetController {
    */
   @Roles(Role.CUSTOMER)
   @Post()
+  @ApiOperation({ summary: 'Register a new pet',
+                  description: 'Returns a data transfer object with the updated record'})
   async create(
     @Body() puppet: PuppetDto,
     @UserId() userId: string
@@ -40,6 +43,8 @@ export class PuppetController {
    */
   @Roles(Role.CUSTOMER)
   @Put(':id')
+  @ApiOperation({ summary: 'Update a pet by id',
+                  description: 'Returns a data transfer object with the updated record'})
   async update(
     @Body() puppet: PuppetDto,
     @Param('id') puppetId: string,
@@ -56,6 +61,8 @@ export class PuppetController {
    */
   @Roles(Role.CUSTOMER)
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a pet by id (soft delete)',
+                  description: 'Returns a message for success'})
   async delete(
     @Param('id') puppetId: string,
     @UserId() userId: string
@@ -76,6 +83,8 @@ export class PuppetController {
    */
   @Roles(Role.CUSTOMER, Role.PILOT)
   @Get('by-customer-id/:id')
+  @ApiOperation({ summary: 'Get a pet by customer id',
+                  description: 'Returns a data transfer object with the record'})
   async findPuppetByCustommrId(@Param('id') customerId: string): Promise<Puppets[]> {
     return await this.puppetService.findPuppetByCustommrId(customerId);
   }
