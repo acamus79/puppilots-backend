@@ -1,6 +1,5 @@
 <p align="center">
- <a href="https://puppilots.com" target="_blank"><img src="https://github.com/acamus79/puppilots-backend/assets/85143329/a16da74d-e91b-4d20-b173-de4b82fe0078"></a> 
-</p>
+ <a href="https://puppilots.com" target="_blank"><img src="https://github.com/acamus79/puppilots-backend/assets/85143329/a16da74d-e91b-4d20-b173-de4b82fe0078"></a></p>
 <h1 align="center">5th Devathon Team 3</h1>
 <h1 align="center"><a href="https://puppilots.com/">puppilots.com</a></h1>
 <p align="center">
@@ -14,7 +13,7 @@ As part of the 5th edition of the Devathon, Puppilots.com is being developed as 
 This collection of REST API endpoints represents the core of the infrastructure that supports the application. Each endpoint is carefully designed to handle various functionalities, allowing users, whether they are customers or walkers, to efficiently interact with the platform. Through this API, key actions can be performed, such as ride creation and management, user authentication and payment validation.
 We invite you to explore this collection to get a complete overview of how our technology facilitates the connection between dog lovers and passionate walkers. Puppilots is dedicated to making the dog walking experience more enjoyable and convenient for everyone involved.
 
-Created with a lot of love and dedication by team 3 of the fifth edition of the Devathon:
+## Created with a lot of love and dedication by Team 3 of the 5th Devathon:
 
 * 🇦🇷 Diego Vecch - [GitHub](https://github.com/diego-vecch)
 * 🇻🇪 Marcos Rivero - [GitHub](https://github.com/MarcosJohan)
@@ -23,11 +22,24 @@ Created with a lot of love and dedication by team 3 of the fifth edition of the 
 * 🇦🇷 Adrian Camus - [GitHub](https://github.com/acamus79)
 * 🇵🇪 Sebastian Llamuca - [GitHub](https://github.com/SebastianLl28)
 
-Developed in Nest.js, PostgreSQL, Prisma, Nginx, Docker and NX Monorepo
+## Check out our website!
+
+<p align="center">
+ <a href="https://puppilots.com" target="_blank"><img src="https://github.com/acamus79/puppilots-backend/assets/85143329/99a0c713-09cb-4484-a519-21b76db92ff3"></a></p>
+ 
+---
 
 Sending email through envialosimple APi. Example of the result:
+<p align="center">
+ <a href="https://puppilots.com" target="_blank"><img src="https://github.com/acamus79/puppilots-backend/assets/85143329/5c2a0f30-2b79-4566-b7e6-426b5580d443"></a></p>
+ 
+---
 
-![image](https://github.com/acamus79/puppilots-backend/assets/85143329/5c2a0f30-2b79-4566-b7e6-426b5580d443)
+Developed in Nest.js, PostgreSQL, Prisma, Nginx, Docker and NX Monorepo
+
+![Arquitectura_puppilots2](https://github.com/acamus79/puppilots-backend/assets/85143329/b07257f9-639b-4864-b9df-3c525e2da550)
+![puppilots - public 2 0 ](https://github.com/acamus79/puppilots-backend/assets/85143329/8f85254c-89bd-413f-9211-1e29617770eb)
+
 
 ---
 
