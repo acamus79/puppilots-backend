@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Walks, WalksPayload, WalksPilots } from '@prisma/client';
+import { Walks, WalksPilots } from '@prisma/client';
 import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
 import {
   CustomerNotAuthorizedException,
@@ -58,7 +58,7 @@ export class AppService {
   /**
    * Accepts a pilot for a walk and updates the walk with the provided pilot ID.
    * Deactivates all other pilot postulations for the same walk.
-   * 
+   *
    * @param aceptPilot - An object containing the pilot ID and walk ID.
    * @param userId - The ID of the user performing the action.
    * @returns The updated walk object with the pilot and updated fields.
@@ -101,7 +101,7 @@ export class AppService {
   }
   /**
    * Creates a new postulation for a walk.
-   * 
+   *
    * @param {string} walkId - The ID of the walk for which the postulation is being created.
    * @param {string} userId - The ID of the user who is making the postulation.
    * @returns {Promise<WalksPilots>} The newly created postulation for the walk.
@@ -170,7 +170,7 @@ export class AppService {
     }
   }
 
-  async findWalksPerCityActive(cityName: string, userId: string): Promise<Walks[]> {
+  async findWalksPerCityActive(cityName: string): Promise<Walks[]> {
     const walks: Walks[] = await this.prismaService.$queryRaw`
       SELECT w.*
       FROM walks AS w
@@ -184,7 +184,7 @@ export class AppService {
 
   /**
    * Retrieves a list of available walks for a pilot based on their user ID.
-   * 
+   *
    * @param userId - The ID of the pilot user.
    * @returns A promise that resolves to an array of Walks objects representing the available walks for the pilot.
    * @throws UserNotExistException if the pilot does not exist for the provided user ID.
@@ -254,7 +254,7 @@ export class AppService {
 
   /**
    * Retrieves a list of unfinished walks for a given pilot by their user ID.
-   * 
+   *
    * @param userId - The ID of the user (pilot) for whom to find the unfinished walks.
    * @returns An array of Walks objects representing the unfinished walks for the given pilot.
    * @throws UserNotExistException if no pilot is found with the given user ID.
@@ -293,7 +293,7 @@ export class AppService {
 
   /**
    * Retrieves the postulations for a specific walk, given the walk ID and user ID.
-   * 
+   *
    * @param walkId - The ID of the walk for which the postulations are being retrieved.
    * @param userId - The ID of the user who is making the request.
    * @returns An array of WalksPilots objects representing the postulations for the specified walk, including the associated pilots and their addresses.
@@ -337,7 +337,7 @@ export class AppService {
     });
     return startWalk;
   }
-  
+
   async pilotEndWalk(walkId: string, userId: string): Promise<Walks> {
     const endWalk = await this.prismaService.walks.update({
       where: { id: walkId },
