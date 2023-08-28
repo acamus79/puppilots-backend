@@ -53,6 +53,16 @@ export class WalkService {
     return await this.sendCommand<WalksPilots[], { walkId: string, userId: string}>("find-walk-postulations", payload)
   }
 
+  async pilotStartWalk(walkId: string, userId: string): Promise<Walks> {
+    const payload = { walkId, userId };
+    return await this.sendCommand<Walks, { walkId: string, userId: string}>("pilot-start-walk", payload)
+  }
+
+  async pilotEndWalk(walkId: string, userId: string): Promise<Walks> {
+    const payload = { walkId, userId };
+    return await this.sendCommand<Walks, { walkId: string, userId: string}>("pilot-end-walk", payload)
+  }
+
   /**
    * Sends a command to the microservice using the client proxy.
    * @param cmd The command to send.

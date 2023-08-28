@@ -83,4 +83,28 @@ export class AppController {
     const walkId = data.walkId['walkId'];
     return await this.appService.findWalksPostulations(walkId, data.userId);
   }
+
+  /**
+   * Method that handles incoming messages with the command "pilot-start-walk".
+   * Starts a walk using the provided walkId and userId.
+   * @param data - An object containing the walkId and userId for starting a walk.
+   * @returns A Promise that resolves to a Walks object representing the started walk.
+   */
+  @MessagePattern({ cmd: "pilot-start-walk" })
+  async startWalk(data: { walkId: string, userId: string }): Promise<Walks> {
+    const walkId = data.walkId['walkId'];
+    return await this.appService.pillotStartWalk(walkId, data.userId);
+  }
+ 
+  /**
+   * Method that handles incoming messages with the command "pilot-end-walk".
+   * Ends a walk based on the provided walkId and userId.
+   * @param data - An object containing the walkId and userId for ending a walk.
+   * @returns A Promise that resolves to a Walks object representing the ended walk.
+   */
+  @MessagePattern({ cmd: "pilot-end-walk" })
+  async endWalk(data: { walkId: string, userId: string }): Promise<Walks> {
+    const walkId = data.walkId['walkId'];
+    return await this.appService.pilotEndWalk(walkId, data.userId);
+  }
 }
