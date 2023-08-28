@@ -42,9 +42,11 @@ export class PuppetService {
    * @param userId The ID of the user performing the operation.
    * @returns A promise that resolves to the deleted puppet.
    */
-  async delete(puppetId: string, userId: string): Promise<void> {
+  async delete(puppetId: string, userId: string): Promise<{ success: true }> {
     const payload = { puppetId, userId };
-    await this.sendCommand<void, { puppetId: string, userId: string }>("delete-puppet", payload);
+    Logger.debug("Deleting pupppet");
+    Logger.debug({ puppetId, userId });
+    return await this.sendCommand<{ success: true }, { puppetId: string, userId: string }>("delete-puppet", payload);
   }
 
   /**
@@ -66,9 +68,7 @@ export class PuppetService {
   private async sendCommand<T, I>(cmd: string, payload: I): Promise<T> {
     try {
       const result = this.customerClient.send({ cmd }, payload);
-      if (cmd.includes('delete')) {
-        return
-      }
+
       return await firstValueFrom(result);
     } catch (error) {
       Logger.debug(error)
