@@ -40,7 +40,16 @@ export class AppService {
     try {
       const login = await this.loginPaypal();
       const valorBase =  parseInt(process.env.APP_WALK_PRICE);
-      const valorPaseo = valorBase*paymentOrder.quantity;
+      const walk = await this.prismaService.walks.findFirst({
+        where: { id: paymentOrder.walkId }
+      });
+      if(!walk){
+        throw new RpcException("Error no se encontro el walk");
+      }
+
+      // geting hours of the walk, ceil to the next number
+      const quantity = this.calculateDifferenceInHours(walk.beginDate, walk.endDate);
+      const valorPaseo = valorBase*quantity;
 
       data = {
         application_context: {
@@ -54,7 +63,7 @@ export class AppService {
                 {
                     name: "Paseo",
                     description: "Paseo de mascota",
-                    quantity: paymentOrder.quantity.toString(),
+                    quantity: quantity.toString(),
                     unit_amount: {
                         currency_code: "USD",
                         value: valorBase.toString()
@@ -91,12 +100,6 @@ export class AppService {
       paymentCreated.clientUrl = paypalOrderResponse.links[1].href;
 
       // Create Payment in DB
-      const walk = await this.prismaService.walks.findFirst({
-        where: { id: paymentOrder.walkId }
-      });
-      if(!walk){
-        throw new RpcException("Error no se encontro el walk");
-      }
       const custumer = await this.prismaService.costumer.findFirst({
         where: { userId: userId }
       });
@@ -246,5 +249,22 @@ export class AppService {
     });
 
     return result;
+  }
+
+
+  /**
+   * Calculates the difference in hours between two given dates and rounds up the result to the nearest whole number.
+   * 
+   * @param startDate The start date of the time period.
+   * @param endDate The end date of the time period.
+   * @returns The difference in hours between the start and end dates, rounded up to the nearest whole number.
+   */
+  calculateDifferenceInHours(startDate: Date, endDate: Date): number {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const differenceInMilliseconds = end.getTime() - start.getTime();
+    const hours = differenceInMilliseconds / (1000 * 60 * 60);
+
+    return Math.ceil(hours);  // Round up to the nearest whole number
   }
 }
