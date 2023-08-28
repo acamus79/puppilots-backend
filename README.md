@@ -1,4 +1,20 @@
-# Devathon
+# 5th Devathon by Team 3
+
+![puppilots](https://github.com/acamus79/puppilots-backend/assets/85143329/6b4882bd-b598-41fd-83a1-0f1da70dba38)
+
+As part of the 5th edition of the Devathon, Puppilots.com is being developed as a web platform designed to simplify the administration of dog walking. Our focus is on providing customers with the opportunity to offer walks for their canine companions, while interested dog walkers can apply to perform these walks. To ensure a seamless experience, we have integrated PayPal as our secure and reliable payment gateway.
+This collection of REST API endpoints represents the core of the infrastructure that supports the application. Each endpoint is carefully designed to handle various functionalities, allowing users, whether they are customers or walkers, to efficiently interact with the platform. Through this API, key actions can be performed, such as ride creation and management, user authentication and payment validation.
+We invite you to explore this collection to get a complete overview of how our technology facilitates the connection between dog lovers and passionate walkers. Puppilots is dedicated to making the dog walking experience more enjoyable and convenient for everyone involved.
+
+Created with a lot of love and dedication by team 3 of the fifth edition of the Devathon:
+* Diego Vecch
+* Marcos Rivero
+* Sebastian
+* Ricardo Oyarzo
+* Adrián Camus
+* Sebastian Llamuca
+---
+
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
