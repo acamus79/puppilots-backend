@@ -135,6 +135,8 @@ export class AppService {
         throw new PuppilotsServerErrorException();
       });
 
+      Logger.debug(paymentApp)
+
     } catch(error) {
       this.logger.debug(error);
     }
@@ -193,7 +195,8 @@ export class AppService {
           where: { id: payment.id},
           data: {
             status: Status.COMPLETADO,
-            capturePaymentRaw: JSON.stringify(paypalCaptureResponse)
+            capturePaymentRaw: JSON.stringify(paypalCaptureResponse),
+            updatedById: userId
           },
           include: {
             walk: true

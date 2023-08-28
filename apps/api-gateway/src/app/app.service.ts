@@ -6,14 +6,14 @@ import { firstValueFrom } from 'rxjs';
 @Injectable()
 export class AppService {
 
-  constructor(//@Inject("EMAIL") private emailClient: ClientProxy,
+  constructor(@Inject("EMAIL") private emailClient: ClientProxy,
               @Inject("AUTH") private readonly authClient: ClientProxy,
               @Inject("PILOT") private readonly pilotService: ClientProxy,
               @Inject("CUSTOMER") private readonly customerService: ClientProxy
               ) {}
 
   async login(userLogin: UserLoginDto) {
-  //  this.emailClient.emit("login", {});
+  this.emailClient.emit("login", {});
     try {
       const response = this.authClient.send({ cmd: "login" }, userLogin);
       return await firstValueFrom(response);

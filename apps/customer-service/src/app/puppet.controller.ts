@@ -1,4 +1,4 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { Puppets } from '@prisma/client';
 import { PuppetDto } from '@puppilots/shared-dtos';

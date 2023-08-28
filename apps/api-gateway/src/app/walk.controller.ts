@@ -4,7 +4,7 @@ import { WalkService } from './walk.service';
 import { Roles } from './decorators/roles.decorator';
 import { Role, Walks, WalksPilots } from '@prisma/client';
 import { UserId } from './decorators/user-id.decorator';
-import { AceptPilotDto, WalkDto, WalkIdDto } from '@puppilots/shared-dtos';
+import { WalkDto, WalkIdDto } from '@puppilots/shared-dtos';
 
 @UseGuards(RolesGuard)
 @Controller('walk')

@@ -1,8 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserLoginDto, VerifyTokenDto } from '@puppilots/shared-dtos';
 import { PrismaService } from '@puppilots/shared-services';
 import * as bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedTokenException } from '@puppilots/shared-exceptions';
 
@@ -53,7 +53,7 @@ export class AppService {
    * @returns The decoded payload if the token is valid.
    * @throws UnauthorizedTokenException if the token is invalid.
   */
-  async verifyToken(token: VerifyTokenDto): Promise<any> {
+  async verifyToken(token: VerifyTokenDto): Promise<DecodedData> {
     try{
       const decoded = this.jwtService.verify(token.token);
       return decoded;
@@ -61,4 +61,10 @@ export class AppService {
       throw new UnauthorizedTokenException();
     }
   }
+}
+
+interface DecodedData {
+  email: string;
+  sub: string;
+  role: Role;
 }

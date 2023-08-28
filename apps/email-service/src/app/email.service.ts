@@ -1,7 +1,6 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Observable, catchError } from "rxjs";
+import { AxiosRequestConfig } from "axios";
 import { EmailDto } from "../dto/email.dto";
 
 @Injectable()

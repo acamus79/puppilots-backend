@@ -48,6 +48,7 @@ export class AppService {
         addressId: address.id
       }   
     });
+    Logger.debug(customer)
 
     return user;
   }
