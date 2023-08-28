@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Walks, WalksPilots } from '@prisma/client';
+import { Walks, WalksPayload, WalksPilots } from '@prisma/client';
 import { AceptPilotDto, WalkDto } from '@puppilots/shared-dtos';
 import {
   CustomerNotAuthorizedException,
@@ -326,4 +326,28 @@ export class AppService {
 
     return walksPilots;
   }
+
+  async pillotStartWalk(walkId: string, userId: string): Promise<Walks> {
+    const startWalk = await this.prismaService.walks.update({
+      where: { id: walkId },
+      data:{
+        beginRealDate: new Date().toISOString(),
+        updatedById: userId
+      }
+    });
+    return startWalk;
+  }
+  
+  async pilotEndWalk(walkId: string, userId: string): Promise<Walks> {
+    const endWalk = await this.prismaService.walks.update({
+      where: { id: walkId },
+      data:{
+        endRealDate: new Date().toISOString(),
+        updatedById: userId
+      }
+    });
+    return endWalk;
+  }
+
+
 }

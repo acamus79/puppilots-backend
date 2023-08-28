@@ -65,4 +65,24 @@ export class WalkController {
   ): Promise<WalksPilots[]> {
     return await this.walkService.findWalksPostulations(walkId, userId);
   }
+
+  @Roles(Role.PILOT)
+  @Post('start-walk')
+  async pilotStartWalk
+  (
+    @Body() walkId: string,
+    @UserId() userId: string
+  ): Promise<Walks> {
+    return await this.walkService.pilotStartWalk(walkId, userId);
+  }
+
+  @Roles(Role.PILOT)
+  @Post('end-walk')
+  async pilotEndWalk
+  (
+    @Body() walkId: string,
+    @UserId() userId: string
+  ): Promise<Walks> {
+    return await this.walkService.pilotEndWalk(walkId, userId);
+  }
 }
