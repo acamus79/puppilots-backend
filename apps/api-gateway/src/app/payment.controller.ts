@@ -15,7 +15,7 @@ export class PaymentController {
 
   @Roles(Role.CUSTOMER)
   @Post('paypal/create')
-  @ApiOperation({ summary: 'Create a paypal order',
+  @ApiOperation({ summary: 'Creates a PayPal order based on the provided payment details and user ID',
                   description: 'Returns a data transfer object with the updated record'})
   async createPaypalOrder(
     @Body() paymentOrder: PaymentOrderFrontDto,
@@ -26,7 +26,7 @@ export class PaymentController {
 
   @Roles(Role.CUSTOMER)
   @Post('paypal/capture-pay')
-  @ApiOperation({ summary: 'Capture a paypal order',
+  @ApiOperation({ summary: 'Captures a PayPal payment by sending a request to the PayPal API',
                   description: 'Returns a data transfer object with the updated record'})
   async capturePaypalPay(
     @Body() paypalCapturePayDto: PaypalCapturePayDto,
