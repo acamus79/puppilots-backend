@@ -233,6 +233,9 @@ async function main() {
       {
         name: 'Venezuela',
       },
+      {
+        name: 'Colombia',
+      }
     ],
   });
   console.log({ countries });
@@ -333,6 +336,26 @@ async function main() {
       { name: 'Trujillo', countryId: 4 },
       { name: 'Tucupita', countryId: 4 },
       { name: 'Valencia', countryId: 4 },
+      //Colombia
+      { name: 'Bogota', countryId: 5 },
+      { name: 'Cali', countryId: 5 },
+      { name: 'Medellin', countryId: 5 },
+      { name: 'Barranquilla', countryId: 5 },
+      { name: 'Cartagena', countryId: 5 },
+      { name: 'Cucuta', countryId: 5 },
+      { name: 'Bucaramanga', countryId: 5 },
+      { name: 'Pereira', countryId: 5 },
+      { name: 'Santa Marta', countryId: 5 },
+      { name: 'Ibagué', countryId: 5 },
+      { name: 'Leticia', countryId: 5 },
+      { name: 'Manizales', countryId: 5 },
+      { name: 'Pasto', countryId: 5 },
+      { name: 'Popayán', countryId: 5 },
+      { name: 'Quibdó', countryId: 5 },
+      { name: 'Riohacha', countryId: 5 },
+      { name: 'San Andrés', countryId: 5 },
+      { name: 'Sincelejo', countryId: 5 },
+      { name: 'Tunja', countryId: 5 },
     ],
   });
   console.log({ cities });
